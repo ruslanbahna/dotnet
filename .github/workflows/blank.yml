@@ -20,4 +20,4 @@ jobs:
 
     - name: Run trivy scanner
       run: |
-        docker run --rm -i aquasec/trivy my-image
+        trivy my-image
