@@ -18,8 +18,6 @@ jobs:
     - name: Build Docker image
       run: docker build -t my-image .
 
-    - name: Run the scanner
-      run: docker run my-image your-scanner-command
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+    - name: Run trivy scanner
+      run: |
+        docker run --rm -i aquasec/trivy my-image
