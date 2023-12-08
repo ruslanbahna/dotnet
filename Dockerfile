@@ -7,3 +7,4 @@ ENV DEBIAN_FRONTEND=noninteractive \
 RUN apt update \
     && apt --no-install-recommends -o=Dpkg::Use-Pty=0 upgrade \
     && apt --yes autoremove
+RUN dotnet add package System.Drawing.Common --version 8.0.0
