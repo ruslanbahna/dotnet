@@ -19,5 +19,8 @@ jobs:
       run: docker build -t my-image .
 
     - name: Run trivy scanner
-      run: |
-        trivy my-image
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: my-image
+        exit-code: 1
+        severity: HIGH, CRITICAL
