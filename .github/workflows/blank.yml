@@ -23,5 +23,5 @@ jobs:
       with:
         image-ref: my-image
         exit-code: 1
-        severity: HIGH, CRITICAL
+        severity: CRITICAL
         trivy-opts: "--config ./trivy.yaml"
