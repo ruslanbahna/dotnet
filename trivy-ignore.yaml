@@ -1,0 +1,5 @@
+ignore:
+  vulnerabilities:
+    - vulnerabilityID: CVE-2021-24112
+      type: Library
+      packageName: 'System.Drawing.Common'

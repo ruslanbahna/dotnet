@@ -1,0 +1,3 @@
+ignoreUnfixed: false
+ignoreFile:
+  - ./trivy-ignore.yaml
