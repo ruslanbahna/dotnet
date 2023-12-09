@@ -12,4 +12,4 @@ RUN apt-get update \
 
 
 # Use jq to update the JSON file
-RUN sed -i 's/"System.Drawing.Common\/4.7.0": {[^}]*}/"System.Drawing.Common\/4.7.0": {"type": "package", "serviceable": false, "sha512": "", "path": "", "hashPath": ""}/' /usr/share/dotnet/sdk/8.0.100/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json
+RUN sed -i 's/"System.Drawing.Common\/4.7.0": {[^}]*}/"System.Drawing.Common\/8.0.0": {"type": "package", "serviceable": false, "sha512": "", "path": "", "hashPath": ""}/' /usr/share/dotnet/sdk/8.0.100/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json
