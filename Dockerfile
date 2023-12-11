@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
+FROM ubuntu:latest
 LABEL my-label=hardened-sdk
 
 ENV DEBIAN_FRONTEND=noninteractive \
