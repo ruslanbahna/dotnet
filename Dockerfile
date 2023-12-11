@@ -22,12 +22,4 @@ RUN apt-get update && \
     apt-get install -y libc6 libgcc1 libgcc-s1 libgssapi-krb5-2 libicu70 liblttng-ust1 libssl3 libstdc++6 libunwind8 zlib1g && \
     apt-get install -y dotnet-sdk-8.0
 
-# Use jq to update the JSON file
-# Save the output of jq to a temporary file
-RUN jq 'del(.libraries["System.Drawing.Common/4.7.0"]) | .libraries["System.Drawing.Common/5.0.3"] = "5.0.3"' /usr/share/dotnet/sdk/8.0.100/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json > /tmp/deps.json
-
-# Display the contents of the temporary file for debugging
-RUN cat /tmp/deps.json
-
-# Move the temporary file to the destination
-RUN mv /tmp/deps.json /usr/share/dotnet/sdk/8.0.100/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json
+RUN apt-get remove -y libgdiplus
