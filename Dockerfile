@@ -23,5 +23,11 @@ RUN apt-get update && \
     apt-get install -y dotnet-sdk-8.0
 
 # Use jq to update the JSON file
-RUN jq 'del(.libraries["System.Drawing.Common/4.7.0"]) | .libraries["System.Drawing.Common/5.0.3"] = "5.0.3"' /usr/share/dotnet/sdk/8.0.100/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json > /tmp/deps.json \
-    && mv /tmp/deps.json /usr/share/dotnet/sdk/8.0.100/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json
+# Save the output of jq to a temporary file
+RUN jq 'del(.libraries["System.Drawing.Common/4.7.0"]) | .libraries["System.Drawing.Common/5.0.3"] = "5.0.3"' /usr/share/dotnet/sdk/8.0.100/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json > /tmp/deps.json
+
+# Display the contents of the temporary file for debugging
+RUN cat /tmp/deps.json
+
+# Move the temporary file to the destination
+RUN mv /tmp/deps.json /usr/share/dotnet/sdk/8.0.100/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json
