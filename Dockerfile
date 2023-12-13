@@ -7,7 +7,9 @@ COPY MyHelloWorldApp/ .
 
 # Restore dependencies and build the application
 RUN dotnet restore
-RUN dotnet publish -c Release -o /app
+
+RUN dotnet publish --no-restore -o /app
+# RUN dotnet publish -c Release -o /app
 
 # Create a runtime image
 FROM mcr.microsoft.com/dotnet/runtime:8.0-jammy-chiseled AS runtime
