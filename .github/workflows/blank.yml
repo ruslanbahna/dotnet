@@ -54,6 +54,9 @@ jobs:
       run: |
         pwd
         ls -al
+
+    - name: Clear Docker Cache
+      run: docker builder prune -a -f
     - name: Build and publish Docker image
       run: docker build -t myapp-image .
 
