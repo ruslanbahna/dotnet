@@ -1,23 +1,12 @@
-# Stage 1: Build the application
+# Use the .NET SDK image to build and run the application
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /source
+WORKDIR /app
 
-# Copy the .csproj file and restore dependencies
-COPY *.csproj .
-RUN dotnet restore
-
-# Copy the application source code
+# Copy the source code into the container
 COPY . .
 
 # Build the application
-RUN dotnet publish -c Release -o /app --no-restore
-
-# Stage 2: Create a runtime image
-FROM mcr.microsoft.com/dotnet/runtime:6.0 AS runtime
-WORKDIR /app
-
-# Copy the published application from the build stage
-COPY --from=build /app .
+RUN dotnet publish -c Release -o out
 
 # Set the entry point for the container
-ENTRYPOINT ["dotnet", "MyHelloWorldApp.dll"]
+CMD ["dotnet", "out/MyHelloWorldApp.dll"]
