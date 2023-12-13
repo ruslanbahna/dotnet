@@ -1,0 +1,19 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  get-dotnet-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Get .NET Version
+        id: dotnet-version
+        run: |
+          DOTNET_VERSION=$(docker run --rm mcr.microsoft.com/dotnet/runtime:8.0-jammy-chiseled dotnet --version)
+          echo "The .NET version is: $DOTNET_VERSION"
+          echo "::set-output name=dotnet_version::$DOTNET_VERSION"
