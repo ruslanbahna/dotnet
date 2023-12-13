@@ -1,6 +1,6 @@
 # Use the build image to build and publish the application
 FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy AS build
-WORKDIR /source/MyHelloWorldApp
+WORKDIR /home/runner/work/dotnet/dotnet/MyHelloWorldApp
 
 # Copy the application source code
 COPY . .
