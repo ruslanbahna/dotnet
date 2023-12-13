@@ -1,5 +1,4 @@
 name: Retrieve .NET Version
-name: Retrieve .NET Version
 
 on:
   push:
