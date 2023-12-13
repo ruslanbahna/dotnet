@@ -1,17 +1,15 @@
-# Use the build image to build and publish the application
+# Use the .NET SDK image to build the application
 FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy AS build
-WORKDIR /home/runner/work/dotnet/dotnet/MyHelloWorldApp
+WORKDIR /source
 
-# Copy the application source code
-COPY . .
+# Copy the application source code from the MyHelloWorldApp subdirectory
+COPY MyHelloWorldApp/ .
 
-# Restore dependencies
+# Restore dependencies and build the application
 RUN dotnet restore
-
-# Build the application
 RUN dotnet publish -c Release -o /app
 
-# Use a runtime image for the final image
+# Create a runtime image
 FROM mcr.microsoft.com/dotnet/runtime:8.0-jammy AS runtime
 WORKDIR /app
 
