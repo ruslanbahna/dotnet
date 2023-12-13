@@ -27,7 +27,7 @@
 #         trivy-opts: "--config ./trivy.yaml"
 #         list-all-pkgs: true
 
-name: .NET Build and Test
+name: Docker Build and Test
 
 on:
   push:
@@ -42,22 +42,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.x
+    - name: Build Docker image
+      run: |
+        docker build -t myapp-image .
+      working-directory: ${{ github.workspace }}  # Specify the directory containing your Dockerfile
 
-    - name: Restore dependencies
-      run: dotnet restore
-
-    - name: Build
-      run: dotnet build --configuration Release
-
-    - name: Test
-      run: dotnet test --configuration Release --logger "trx;LogFileName=testresults.trx"
-
-    - name: Publish Test Results
-      uses: actions/upload-artifact@v2
-      with:
-        name: test-results
-        path: testresults.trx
+    - name: Run Docker container
+      run: |
+        docker run myapp-image
+      working-directory: ${{ github.workspace }}

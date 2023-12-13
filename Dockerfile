@@ -1,17 +1,16 @@
-# Use the official .NET SDK image as a build stage
+# Stage 1: Build the .NET Core application
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-# Copy the application source code into the container
-COPY . .
+# Copy the source code
+COPY ./src /app
 
-# Build the application
+# Restore dependencies and build
+RUN dotnet restore
 RUN dotnet publish -c Release -o out
 
-# Use the official .NET runtime image as the final image
+# Stage 2: Create a smaller runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=build /app/out ./
-
-# Set the entry point for the application
-ENTRYPOINT ["dotnet", "HelloWorldApp.dll"]
+COPY --from=build /app/out .
+ENTRYPOINT ["dotnet", "myapp.dll"]
