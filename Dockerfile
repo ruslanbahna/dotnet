@@ -18,5 +18,7 @@ WORKDIR /app
 # Copy the published application from the build stage
 COPY --from=build /app .
 
+EXPOSE 8080
+
 # Set the entry point for the container
 ENTRYPOINT ["dotnet", "MyHelloWorldApp.dll"]
