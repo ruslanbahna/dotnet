@@ -47,7 +47,7 @@ jobs:
         dotnet new console -n MyHelloWorldApp
       working-directory: ${{ github.workspace }}  # Specify the directory where you want to create the app
     - name: List project directory contents
-      run: ls /source/MyHelloWorldApp
+      run: ls /home/runner/work/dotnet/dotnet/MyHelloWorldApp
     - name: Display .csproj contents
       run: cat /source/MyHelloWorldApp/YourApp.csproj
 
