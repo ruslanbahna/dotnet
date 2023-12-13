@@ -48,8 +48,8 @@ jobs:
       working-directory: ${{ github.workspace }}  # Specify the directory where you want to create the app
     - name: List project directory contents
       run: ls /home/runner/work/dotnet/dotnet/MyHelloWorldApp
-    - name: Display .csproj contents
-      run: cat /source/MyHelloWorldApp/YourApp.csproj
+    - name: Cat MyHelloWorldApp.csproj
+      run: cat /home/runner/work/dotnet/dotnet/MyHelloWorldApp/MyHelloWorldApp.csproj
 
     - name: Build Docker image
       run: |
