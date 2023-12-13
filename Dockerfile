@@ -7,7 +7,6 @@ COPY MyHelloWorldApp/ .
 
 # Restore dependencies and build the application
 RUN dotnet restore
-COPY . .
 RUN dotnet publish -c Release -o /app
 
 # Create a runtime image
