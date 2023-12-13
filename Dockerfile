@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy AS build
 WORKDIR /source
 
 # Copy the application source code
-COPY . .
+COPY ./src .
 
 # Build the application
 RUN dotnet publish -c Release -o /app
