@@ -9,11 +9,7 @@ COPY ./src .
 RUN dotnet publish -c Release -o /app
 
 # Create a runtime image
-FROM mcr.microsoft.com/dotnet/runtime:8.0-jammy AS runtime
+FROM mcr.microsoft.com/dotnet/runtime:8.0-jammy-chiseled
 WORKDIR /app
-
-# Copy the published application from the build stage
 COPY --from=build /app .
-
-# Set the entry point for the container
-ENTRYPOINT ["dotnet", "YourApp.dll"]
+ENTRYPOINT ["./dotnetapp"]
