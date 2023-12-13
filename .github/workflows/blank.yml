@@ -50,11 +50,17 @@ jobs:
       run: ls /home/runner/work/dotnet/dotnet/MyHelloWorldApp
     - name: Cat MyHelloWorldApp.csproj
       run: cat /home/runner/work/dotnet/dotnet/MyHelloWorldApp/MyHelloWorldApp.csproj
-
-    - name: Build Docker image
+    - name: Check current directory
       run: |
-        docker build -t myapp-image -f ${{ github.workspace }}/Dockerfile .
-      working-directory: ${{ github.workspace }}  # Specify the directory containing your Dockerfile
+        pwd
+        ls -al
+    - name: Build and publish Docker image
+      run: docker build -t myapp-image .
+
+    # - name: Build Docker image
+    #   run: |
+    #     docker build -t myapp-image -f ${{ github.workspace }}/Dockerfile .
+    #   working-directory: ${{ github.workspace }}  # Specify the directory containing your Dockerfile
 
     - name: Run Docker container
       run: |
