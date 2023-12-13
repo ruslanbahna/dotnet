@@ -1,3 +1,5 @@
+name: Retrieve .NET Version
+
 on:
   push:
     branches:
@@ -8,12 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Get .NET Version
-        id: dotnet-version
-        run: |
-          DOTNET_VERSION=$(docker run --rm mcr.microsoft.com/dotnet/runtime:8.0-jammy-chiseled dotnet --version)
-          echo "The .NET version is: $DOTNET_VERSION"
-          echo "::set-output name=dotnet_version::$DOTNET_VERSION"
+    - name: Get .NET Version
+      run: |
+        CONTAINER_ID=$(docker run -d mcr.microsoft.com/dotnet/runtime:8.0-jammy-chiseled sleep infinity)
+        DOTNET_VERSION=$(docker inspect -f '{{range .Config.Env}}{{if (index (split "=" .) 0) "DOTNET_VERSION"}}{{.}}{{end}}{{end}}' $CONTAINER_ID | cut -d'=' -f2)
+        echo "The .NET Version is: $DOTNET_VERSION"
+        docker stop $CONTAINER_ID
+
+      env:
+        DOCKER_CLI_AGGREGATE_OUTPUT: 1
