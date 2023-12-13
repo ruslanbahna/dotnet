@@ -44,10 +44,14 @@ jobs:
 
     - name: Build Docker image
       run: |
+        # Navigate to the directory containing your Dockerfile
+        cd ${{ github.workspace }}
         docker build -t myapp-image .
-      working-directory: ${{ github.workspace }}  # Specify the directory containing your Dockerfile
+      working-directory: ${{ github.workspace }}
 
     - name: Run Docker container
       run: |
+        # Navigate to the directory containing your Dockerfile
+        cd ${{ github.workspace }}
         docker run myapp-image
       working-directory: ${{ github.workspace }}
