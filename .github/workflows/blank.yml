@@ -42,16 +42,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Create a new console app
+      run: |
+        dotnet new console -n MyHelloWorldApp
+      working-directory: ${{ github.workspace }}  # Specify the directory where you want to create the app
+
     - name: Build Docker image
       run: |
-        # Navigate to the directory containing your Dockerfile
-        cd ${{ github.workspace }}
         docker build -t myapp-image .
-      working-directory: ${{ github.workspace }}
+      working-directory: ${{ github.workspace }}  # Specify the directory containing your Dockerfile
 
     - name: Run Docker container
       run: |
-        # Navigate to the directory containing your Dockerfile
-        cd ${{ github.workspace }}
         docker run myapp-image
       working-directory: ${{ github.workspace }}
