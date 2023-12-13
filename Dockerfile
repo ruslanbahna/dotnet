@@ -2,6 +2,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy AS build
 WORKDIR /source
 
+# Install debugging tools (e.g., gdb, strace) and any other required packages
+RUN apt-get update && apt-get install -y gdb strace
+
 # Copy the application source code
 COPY ./src .
 
