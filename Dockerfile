@@ -17,4 +17,4 @@ WORKDIR /app
 COPY --from=build /app .
 
 # Set the entry point for the container
-ENTRYPOINT ["dotnet", "YourApp.dll"]
+ENTRYPOINT ["dotnet", "MyHelloWorldApp.dll"]
