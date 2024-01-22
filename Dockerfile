@@ -26,6 +26,8 @@ RUN dotnet new console
 # Update the System.Data.SqlClient package
 RUN dotnet add package System.Data.SqlClient --version 4.8.6
 
+RUN dotnet list package --include-transitive
+
 # Publish the project to resolve and include all dependencies
 RUN dotnet publish -c Release -o /published-app
 
