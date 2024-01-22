@@ -3,11 +3,13 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
 # Install necessary tools
 RUN apt-get update && apt-get install -y nuget
 
-# Create a temporary project to update the package
-RUN mkdir /tmp/update-project
+# Create a temporary project to force an update of the package
 WORKDIR /tmp/update-project
 RUN dotnet new console
 RUN dotnet add package System.Data.SqlClient --version 4.8.6
+
+# Copy the updated packages to the .NET SDK directory
+RUN cp -r /tmp/update-project/bin/Debug/net6.0/* /usr/share/dotnet/sdk/8.0.101/
 
 # Clean up
 WORKDIR /
