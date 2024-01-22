@@ -18,7 +18,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
 
 # Install necessary tools
 RUN apt-get update && apt-get install -y nuget
-RUN apt-get purge -y powershell
+RUN apt list --installed
 
 # Create a temporary project to force an update of the package
 WORKDIR /tmp/update-project
