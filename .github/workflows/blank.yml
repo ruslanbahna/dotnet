@@ -21,9 +21,7 @@ jobs:
 
     - name: Debug: Access Running Container
       run: |
-        # Access the running container
-        CONTAINER_NAME=my-container  # Replace with your container name or ID
-        docker exec -it $CONTAINER_NAME /bin/bash
+        docker exec -it my-image /bin/bash
 
         # Inside the container, you can perform searches for System.Data.SqlClient
         # For example, search for the assembly (.dll) file:
@@ -46,6 +44,7 @@ jobs:
 
     - name: Clean up
       run: docker rmi my-image:latest
+
 
 
 

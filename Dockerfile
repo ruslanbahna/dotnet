@@ -14,6 +14,7 @@
 # # Clean up
 # WORKDIR /
 # RUN rm -rf /tmp/update-project
+# Use a base image, for example:
 FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
 
 # Install necessary tools
@@ -28,6 +29,9 @@ RUN dotnet new console
 RUN dotnet add package System.Data.SqlClient --version 4.8.6
 RUN cat *.csproj
 RUN dotnet list package --include-transitive
+
+# Remove System.Data.SqlClient.dll files to avoid scanning errors
+RUN find / -name "System.Data.SqlClient.dll" -delete
 
 # Publish the project to resolve and include all dependencies
 RUN dotnet publish -c Release -o /published-app
