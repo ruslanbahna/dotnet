@@ -1,5 +1,4 @@
 # This is a basic workflow to help you get started with Actions
-
 name: Build and Scan
 
 on:
@@ -15,17 +14,44 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Build Docker image
-      run: docker build -t my-image .
+    - name: Pull .NET SDK Docker image
+      run: docker pull mcr.microsoft.com/dotnet/sdk:8.0-jammy
 
-    - name: Run trivy scanner
+    - name: Run trivy scanner on .NET SDK image
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: my-image
+        image-ref: 'mcr.microsoft.com/dotnet/sdk:8.0-jammy'
         exit-code: 1
         severity: CRITICAL
         trivy-opts: "--config ./trivy.yaml"
         list-all-pkgs: true
+
+# name: Build and Scan
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v2
+
+#     - name: Build Docker image
+#       run: docker build -t my-image .
+
+#     - name: Run trivy scanner
+#       uses: aquasecurity/trivy-action@master
+#       with:
+#         image-ref: my-image
+#         exit-code: 1
+#         severity: CRITICAL
+#         trivy-opts: "--config ./trivy.yaml"
+#         list-all-pkgs: true
 
 # name: Build and Run .NET Core App in Docker
 
