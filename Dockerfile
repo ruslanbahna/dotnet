@@ -24,12 +24,15 @@ WORKDIR /tmp/update-project
 RUN dotnet new console
 RUN dotnet add package System.Data.SqlClient --version 4.8.6
 
+# Build the project to generate the bin/Debug directory
+RUN dotnet build
+
 # List files in the project directory to verify the path
 RUN ls /tmp/update-project/bin/Debug/
 
-# Copy the updated packages to the .NET SDK directory
-# Adjust the paths according to the output of the previous 'ls' command
-RUN cp -r /tmp/update-project/bin/Debug/net6.0/* /usr/share/dotnet/sdk/8.0.101/ || (echo "Copy failed" && exit 1)
+# (Optional) Copy the updated packages to the .NET SDK directory
+# Adjust the paths according to the output of the 'ls' command
+# RUN cp -r /tmp/update-project/bin/Debug/net6.0/* /usr/share/dotnet/sdk/8.0.101/ || (echo "Copy failed" && exit 1)
 
 # Clean up
 WORKDIR /
