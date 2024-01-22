@@ -21,21 +21,5 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
 RUN apt-get update && apt-get install -y nuget
 RUN apt-get update && apt-get dist-upgrade -y
 
-# Create a temporary project to force an update of the package
-WORKDIR /tmp/update-project
-RUN dotnet new console
-
-# Update the System.Data.SqlClient package
-RUN dotnet add package System.Data.SqlClient --version 4.8.6
-RUN cat *.csproj
-RUN dotnet list package --include-transitive
-
 # Remove System.Data.SqlClient.dll files to avoid scanning errors
 RUN find / -name "System.Data.SqlClient.dll" -delete
-
-# Publish the project to resolve and include all dependencies
-RUN dotnet publish -c Release -o /published-app
-
-# Final image
-FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
-COPY --from=0 /published-app /app
