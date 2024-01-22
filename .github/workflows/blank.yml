@@ -1,33 +1,6 @@
-# # This is a basic workflow to help you get started with Actions
+# This is a basic workflow to help you get started with Actions
 
-# name: Build and Scan
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#     - name: Checkout repository
-#       uses: actions/checkout@v2
-
-#     - name: Build Docker image
-#       run: docker build -t my-image .
-
-#     - name: Run trivy scanner
-#       uses: aquasecurity/trivy-action@master
-#       with:
-#         image-ref: my-image
-#         exit-code: 1
-#         severity: CRITICAL
-#         trivy-opts: "--config ./trivy.yaml"
-#         list-all-pkgs: true
-
-name: Build and Run .NET Core App in Docker
+name: Build and Scan
 
 on:
   push:
@@ -39,34 +12,61 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Create .NET Core App
-      run: |
-        dotnet new console -n MyHelloWorldApp
-      # working-directory: ${{ github.workspace }}  # Specify the directory where you want to create the app
-    # - name: List project directory contents
-    #   run: ls /home/runner/work/dotnet/dotnet/MyHelloWorldApp
-    # - name: Cat MyHelloWorldApp.csproj
-    #   run: cat /home/runner/work/dotnet/dotnet/MyHelloWorldApp/MyHelloWorldApp.csproj
-    # - name: Check current directory
-    #   run: |
-    #     pwd
-    #     ls -al
+    - name: Build Docker image
+      run: docker build -t my-image .
 
-    # - name: Clear Docker Cache
-    #   run: docker builder prune -a -f
-    - name: Build and publish Docker image
-      run: docker build -t myapp-image .
+    - name: Run trivy scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: my-image
+        exit-code: 1
+        severity: CRITICAL
+        trivy-opts: "--config ./trivy.yaml"
+        list-all-pkgs: true
 
-    # - name: Build Docker image
-    #   run: |
-    #     docker build -t myapp-image -f ${{ github.workspace }}/Dockerfile .
-    #   working-directory: ${{ github.workspace }}  # Specify the directory containing your Dockerfile
+# name: Build and Run .NET Core App in Docker
 
-    - name: Run Docker container
-      run: |
-        docker run myapp-image
-      # working-directory: ${{ github.workspace }}
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+
+#     - name: Create .NET Core App
+#       run: |
+#         dotnet new console -n MyHelloWorldApp
+#       # working-directory: ${{ github.workspace }}  # Specify the directory where you want to create the app
+#     # - name: List project directory contents
+#     #   run: ls /home/runner/work/dotnet/dotnet/MyHelloWorldApp
+#     # - name: Cat MyHelloWorldApp.csproj
+#     #   run: cat /home/runner/work/dotnet/dotnet/MyHelloWorldApp/MyHelloWorldApp.csproj
+#     # - name: Check current directory
+#     #   run: |
+#     #     pwd
+#     #     ls -al
+
+#     # - name: Clear Docker Cache
+#     #   run: docker builder prune -a -f
+#     - name: Build and publish Docker image
+#       run: docker build -t myapp-image .
+
+#     # - name: Build Docker image
+#     #   run: |
+#     #     docker build -t myapp-image -f ${{ github.workspace }}/Dockerfile .
+#     #   working-directory: ${{ github.workspace }}  # Specify the directory containing your Dockerfile
+
+#     - name: Run Docker container
+#       run: |
+#         docker run myapp-image
+#       # working-directory: ${{ github.workspace }}
 
