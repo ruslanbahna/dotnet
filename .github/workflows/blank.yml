@@ -22,7 +22,7 @@ jobs:
       with:
         image-ref: 'mcr.microsoft.com/dotnet/sdk:8.0-jammy'
         exit-code: 1
-        severity: CRITICAL, HIGH
+        severity: CRITICAL,HIGH
 
 # name: Build and Scan
 
