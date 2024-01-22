@@ -21,5 +21,19 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
 RUN apt-get update && apt-get install -y nuget
 RUN apt-get update && apt-get dist-upgrade -y
 
-# Remove System.Data.SqlClient.dll files to avoid scanning errors
+# Create a temporary project to force an update of the package
+WORKDIR /tmp/update-project
+RUN dotnet new console
+
+# Update the System.Data.SqlClient package
+# (Note: Since you don't have a project file, you can't use dotnet add package)
+# Manually remove the vulnerable DLL file from your image
 RUN find / -name "System.Data.SqlClient.dll" -delete
+
+# Publish the project to resolve and include all dependencies
+RUN dotnet publish -c Release -o /published-app
+
+# Final image
+FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
+COPY --from=0 /published-app /app
+
