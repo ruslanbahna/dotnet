@@ -19,21 +19,6 @@ jobs:
     - name: Build Docker image
       run: docker build -t my-image .
 
-    - name: Debug: Access Running Container
-      run: |
-        docker exec -it my-image /bin/bash
-
-        # Inside the container, you can perform searches for System.Data.SqlClient
-        # For example, search for the assembly (.dll) file:
-        find / -name "System.Data.SqlClient.dll"
-
-        # Or search for the installed package (using the appropriate package manager)
-        dpkg -l | grep System.Data.SqlClient
-
-        # Exit the container when done
-        exit
-      continue-on-error: true
-
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
