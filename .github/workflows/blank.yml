@@ -1,4 +1,4 @@
-name: Build, Update and Scan
+name: Build, Update, and Scan with Debug
 
 on:
   push:
@@ -16,8 +16,25 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
-    - name: Build Docker image 
+    - name: Build Docker image
       run: docker build -t my-image .
+
+    - name: Debug: Access Running Container
+      run: |
+        # Access the running container
+        CONTAINER_NAME=my-container  # Replace with your container name or ID
+        docker exec -it $CONTAINER_NAME /bin/bash
+
+        # Inside the container, you can perform searches for System.Data.SqlClient
+        # For example, search for the assembly (.dll) file:
+        find / -name "System.Data.SqlClient.dll"
+
+        # Or search for the installed package (using the appropriate package manager)
+        dpkg -l | grep System.Data.SqlClient
+
+        # Exit the container when done
+        exit
+      continue-on-error: true
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
@@ -29,6 +46,7 @@ jobs:
 
     - name: Clean up
       run: docker rmi my-image:latest
+
 
 
 # name: Build and Scan
