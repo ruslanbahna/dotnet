@@ -23,8 +23,6 @@ jobs:
         image-ref: 'mcr.microsoft.com/dotnet/sdk:8.0-jammy'
         exit-code: 1
         severity: CRITICAL
-        trivy-opts: "--config ./trivy.yaml"
-        list-all-pkgs: true
 
 # name: Build and Scan
 
