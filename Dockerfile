@@ -47,7 +47,7 @@ FROM ubuntu:latest
 
 # Set frontend to noninteractive to avoid timezone prompt
 ENV DEBIAN_FRONTEND=noninteractive
-    TERM=xtern
+    TERM=xterm
 
 # Add Microsoft package signing key and package repository
 RUN \
