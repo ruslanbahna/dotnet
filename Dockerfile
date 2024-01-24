@@ -40,28 +40,28 @@
 # COPY --from=0 /published-app /app
 
 # Use a base image as the starting point
-FROM ubuntu:latest
+# Use a specific version of Ubuntu as the base image
+FROM ubuntu:20.04
 
-# Update the package list and install the .NET SDK
+# Update the package list
 RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-transport-https \
     ca-certificates \
     curl \
-    software-properties-common
+    software-properties-common \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-archive-keyring.gpg
+# Add Microsoft package signing key and package source
+RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-archive-keyring.gpg \
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/ubuntu/20.04/prod main" > /etc/apt/sources.list.d/dotnet5.list
 
-RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/debian/your_os_version prod main" > /etc/apt/sources.list.d/dotnet5.list
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    dotnet-sdk-8.0
+# Install .NET SDK
+RUN apt-get update && apt-get install -y --no-install-recommends dotnet-sdk-8.0 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for .NET
 ENV DOTNET_ROOT=/usr/share/dotnet
 ENV PATH=${PATH}:${DOTNET_ROOT}
-
-# Clean up the package lists
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
 
