@@ -53,7 +53,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Add Microsoft package signing key and package source
 RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-archive-keyring.gpg \
-    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/ubuntu/20.04/prod main" > /etc/apt/sources.list.d/dotnet5.list
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/ubuntu/20.04 main" > /etc/apt/sources.list.d/dotnet5.list
 
 # Install .NET SDK
 RUN apt-get update && apt-get install -y --no-install-recommends dotnet-sdk-8.0 \
