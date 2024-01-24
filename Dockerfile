@@ -39,7 +39,7 @@
 # FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
 # COPY --from=0 /published-app /app
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
+FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy AS build
 
 # Install necessary tools
 RUN apt-get update && apt-get install -y nuget
@@ -47,6 +47,9 @@ RUN apt-get update && apt-get dist-upgrade -y
 
 # Create a temporary project directory
 WORKDIR /tmp/update-project
+
+# Create a simple dummy program
+RUN echo 'class Program { static void Main() { } }' > Program.cs
 
 # Create a project file within the image
 RUN echo '<Project Sdk="Microsoft.NET.Sdk">' > update-project.csproj && \
@@ -67,5 +70,7 @@ RUN dotnet publish -c Release -o /published-app
 
 # Final image
 FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
+COPY --from=build /published-app /app
+
 COPY --from=0 /published-app /app
 
