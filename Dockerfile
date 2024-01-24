@@ -41,27 +41,18 @@
 
 # Use a base image as the starting point
 # Use a specific version of Ubuntu as the base image
-FROM ubuntu:20.04
+# Use Ubuntu 22.04 as the base image
+FROM ubuntu:22.04
 
 # Update the package list
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update
 
-# Add Microsoft package signing key and package source
-RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-archive-keyring.gpg \
-    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/ubuntu focal main" > /etc/apt/sources.list.d/dotnet5.list
+# Install the .NET SDK 8.0
+RUN apt-get install -y dotnet-sdk-8.0
 
-# Install .NET SDK
-RUN apt-get update && apt-get install -y --no-install-recommends dotnet-sdk-8.0 \
-    && rm -rf /var/lib/apt/lists/*
+# Clean up the package lists
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set environment variables for .NET
-ENV DOTNET_ROOT=/usr/share/dotnet
-ENV PATH=${PATH}:${DOTNET_ROOT}
 
 
 
