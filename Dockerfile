@@ -62,8 +62,10 @@ RUN \
     apt-get --no-install-recommends --quiet --yes -o=Dpkg::Use-Pty=0 upgrade ; \
     apt-get --no-install-recommends install --yes dotnet-sdk-8.0 jq moreutils nuget ; \
     jq 'del(.libraries["System.Drawing.Common/4.7.0"])' /usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json | sponge /usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json ; \
+    apt-get purge --yes wget apt-transport-https software-properties-common  jq moreutils ; \
     apt --yes autoremove ; \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get clean ; \
+    rm -rf /var/lib/apt/lists/*
 
 
 
