@@ -39,37 +39,29 @@
 # FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
 # COPY --from=0 /published-app /app
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy AS build
+# Use a base image as the starting point
+FROM ubuntu:latest
 
-# Install necessary tools
-RUN apt-get update && apt-get install -y nuget
-RUN apt-get update && apt-get dist-upgrade -y
+# Update the package list and install the .NET SDK
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
 
-# Create a temporary project directory
-WORKDIR /tmp/update-project
+RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-archive-keyring.gpg
 
-# Create a simple dummy program
-RUN echo 'class Program { static void Main() { } }' > Program.cs
+RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/debian/your_os_version prod main" > /etc/apt/sources.list.d/dotnet5.list
 
-# Create a project file within the image
-RUN echo '<Project Sdk="Microsoft.NET.Sdk">' > update-project.csproj && \
-    echo '  <PropertyGroup>' >> update-project.csproj && \
-    echo '    <OutputType>Exe</OutputType>' >> update-project.csproj && \
-    echo '    <TargetFramework>net8.0</TargetFramework>' >> update-project.csproj && \
-    echo '  </PropertyGroup>' >> update-project.csproj && \
-    echo '  <ItemGroup>' >> update-project.csproj && \
-    echo '    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />' >> update-project.csproj && \
-    echo '  </ItemGroup>' >> update-project.csproj && \
-    echo '</Project>' >> update-project.csproj
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    dotnet-sdk-8.0
 
-# Restore NuGet packages
-RUN dotnet restore
+# Set environment variables for .NET
+ENV DOTNET_ROOT=/usr/share/dotnet
+ENV PATH=${PATH}:${DOTNET_ROOT}
 
-# Publish the project to resolve and include all dependencies
-RUN dotnet publish -c Release -o /published-app
+# Clean up the package lists
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Final image
-FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
-COPY --from=build /published-app /app
 
 
