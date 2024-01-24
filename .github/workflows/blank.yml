@@ -1,4 +1,4 @@
-name: Build, Update, and Scan with Debug
+name: Build, Update, and Scan with Debug 
 
 on:
   push:
