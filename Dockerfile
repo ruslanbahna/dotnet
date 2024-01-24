@@ -54,8 +54,8 @@ RUN apt-get update \
 
 # Install the .NET SDK 8.0
 RUN apt-get update \
-    && apt-get install -y dotnet-sdk-8.0
-
+    && apt-get install -y dotnet-sdk-8.0 jq moreutils nuget
+RUN jq 'del(.libraries["System.Drawing.Common/4.7.0"])' usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json | sponge usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json
 # Clean up the package lists
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
