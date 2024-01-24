@@ -37,3 +37,4 @@ apt-get purge --yes wget apt-transport-https software-properties-common jq moreu
 apt --yes autoremove: Automatically removes any unused packages.
 
 apt-get clean; rm -rf /var/lib/apt/lists/*: Cleans up the package cache and temporary files to reduce the image size.
+The --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt part of the RUN command in your Dockerfile is a Docker BuildKit feature. It mounts a cache for /var/cache/apt and /var/lib/apt directories during the build process. This cache helps to speed up the build by reusing the previously downloaded packages and apt indexes. It's particularly useful for iterative development and building images, as it prevents the need to re-download packages each time the image is built, thereby reducing build times.
