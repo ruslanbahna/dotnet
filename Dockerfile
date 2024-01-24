@@ -45,6 +45,9 @@
 # Use Ubuntu 22.04 as the base image
 FROM ubuntu:22.04
 
+# Set frontend to noninteractive to avoid timezone prompt
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Add Microsoft package signing key and package repository
 RUN apt-get update \
     && apt-get install -y wget apt-transport-https software-properties-common \
@@ -55,7 +58,8 @@ RUN apt-get update \
 # Install the .NET SDK 8.0
 RUN apt-get update \
     && apt-get install -y dotnet-sdk-8.0 jq moreutils nuget
-RUN jq 'del(.libraries["System.Drawing.Common/4.7.0"])' usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json | sponge usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json
+RUN jq 'del(.libraries["System.Drawing.Common/4.7.0"])' /usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json | sponge /usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json
+
 # Clean up the package lists
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
