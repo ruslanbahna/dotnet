@@ -43,25 +43,27 @@
 # Use a specific version of Ubuntu as the base image
 # Use Ubuntu 22.04 as the base image
 # Use Ubuntu 22.04 as the base image
-FROM ubuntu:22.04
+FROM ubuntu:latest
 
 # Set frontend to noninteractive to avoid timezone prompt
 ENV DEBIAN_FRONTEND=noninteractive
+    TERM=xtern
 
 # Add Microsoft package signing key and package repository
-RUN apt-get update \
-    && apt-get install -y wget apt-transport-https software-properties-common \
-    && wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
-    && dpkg -i packages-microsoft-prod.deb \
-    && rm packages-microsoft-prod.deb
-
-# Install the .NET SDK 8.0
-RUN apt-get update \
-    && apt-get install -y dotnet-sdk-8.0 jq moreutils nuget
-RUN jq 'del(.libraries["System.Drawing.Common/4.7.0"])' /usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json | sponge /usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json
-
-# Clean up the package lists
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN \
+    --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt \
+    apt-get update ; \
+    apt-get --no-install-recommends --quiet --yes -o=Dpkg::Use-Pty=0 upgrade ; \
+    apt-get --no-install-recommends install -y wget apt-transport-https software-properties-common ; \
+    wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb ; \
+    dpkg -i packages-microsoft-prod.deb ; \
+    rm packages-microsoft-prod.deb ; \
+    apt-get update ; \
+    apt-get --no-install-recommends --quiet --yes -o=Dpkg::Use-Pty=0 upgrade ; \
+    apt-get --no-install-recommends install --yes dotnet-sdk-8.0 jq moreutils nuget ; \
+    jq 'del(.libraries["System.Drawing.Common/4.7.0"])' /usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json | sponge /usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json ; \
+    apt --yes autoremove ; \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
 
