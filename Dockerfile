@@ -72,5 +72,4 @@ RUN dotnet publish -c Release -o /published-app
 FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
 COPY --from=build /published-app /app
 
-COPY --from=0 /published-app /app
 
