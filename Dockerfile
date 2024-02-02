@@ -70,17 +70,11 @@
 #     apt-get clean ; \
 #     rm -rf /var/lib/apt/lists/*
 
-
 FROM ubuntu:latest
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive \
-    TERM=xterm \
-    NVM_DIR=/usr/local/nvm \
-    NODE_VERSION=14.17.6
-
-# Use bash as the shell
-SHELL ["/bin/bash", "-c"]
+    TERM=xterm
 
 # Install dependencies
 RUN apt-get update && \
@@ -88,16 +82,18 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-# Create NVM directory and set ownership
-RUN mkdir -p $NVM_DIR && chown -R <your-username>:<your-group> $NVM_DIR
-
+# Install NVM
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
-# Set Node.js version for the user
-RUN echo "nvm install $NODE_VERSION" >> ~/.bashrc
+# Install the latest version of Node.js and npm
+RUN . "$NVM_DIR/nvm.sh" && \
+    nvm install node
 
-# Update PATH for the user
-ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+# Update PATH
+ENV PATH $NVM_DIR/versions/node/$(nvm current)/bin:$PATH
+
+# Verify installation
+RUN node -v && npm -v
 
 
 
