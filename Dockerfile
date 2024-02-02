@@ -43,29 +43,55 @@
 # Use a specific version of Ubuntu as the base image
 # Use Ubuntu 22.04 as the base image
 # Use Ubuntu 22.04 as the base image
+
+
+
+# FROM ubuntu:latest
+
+# # Set frontend to noninteractive to avoid timezone prompt
+# ENV DEBIAN_FRONTEND=noninteractive \
+#     TERM=xterm
+
+# # Add Microsoft package signing key and package repository
+# RUN \
+#     --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt \
+#     apt-get update ; \
+#     apt-get --no-install-recommends --quiet --yes -o=Dpkg::Use-Pty=0 upgrade ; \
+#     apt-get --no-install-recommends install -y wget apt-transport-https software-properties-common ; \
+#     wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb ; \
+#     dpkg -i packages-microsoft-prod.deb ; \
+#     rm packages-microsoft-prod.deb ; \
+#     apt-get update ; \
+#     apt-get --no-install-recommends --quiet --yes -o=Dpkg::Use-Pty=0 upgrade ; \
+#     apt-get --no-install-recommends install --yes dotnet-sdk-8.0 jq moreutils nuget ; \
+#     jq 'del(.libraries["System.Drawing.Common/4.7.0"])' /usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json | sponge /usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json ; \
+#     apt-get purge --yes wget apt-transport-https software-properties-common  jq moreutils ; \
+#     apt --yes autoremove ; \
+#     apt-get clean ; \
+#     rm -rf /var/lib/apt/lists/*
+
+
 FROM ubuntu:latest
 
-# Set frontend to noninteractive to avoid timezone prompt
+# Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive \
-    TERM=xterm
+    TERM=xterm \
+    NVM_DIR=/usr/local/nvm \
+    NODE_VERSION=20.10.1
 
-# Add Microsoft package signing key and package repository
-RUN \
-    --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt \
-    apt-get update ; \
-    apt-get --no-install-recommends --quiet --yes -o=Dpkg::Use-Pty=0 upgrade ; \
-    apt-get --no-install-recommends install -y wget apt-transport-https software-properties-common ; \
-    wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb ; \
-    dpkg -i packages-microsoft-prod.deb ; \
-    rm packages-microsoft-prod.deb ; \
-    apt-get update ; \
-    apt-get --no-install-recommends --quiet --yes -o=Dpkg::Use-Pty=0 upgrade ; \
-    apt-get --no-install-recommends install --yes dotnet-sdk-8.0 jq moreutils nuget ; \
-    jq 'del(.libraries["System.Drawing.Common/4.7.0"])' /usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json | sponge /usr/share/dotnet/sdk/*/Roslyn/Microsoft.Build.Tasks.CodeAnalysis.deps.json ; \
-    apt-get purge --yes wget apt-transport-https software-properties-common  jq moreutils ; \
-    apt --yes autoremove ; \
-    apt-get clean ; \
-    rm -rf /var/lib/apt/lists/*
+# Install dependencies and Node.js via nvm
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends wget curl git ca-certificates && \
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
+    . "$NVM_DIR/nvm.sh" && \
+    nvm install $NODE_VERSION && \
+    nvm use $NODE_VERSION && \
+    nvm alias default $NODE_VERSION && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+
+# Update PATH
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 
 
