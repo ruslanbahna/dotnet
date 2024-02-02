@@ -83,17 +83,19 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # Install NVM
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | NVM_DIR=/root/.nvm bash
 
-# Install the latest version of Node.js and npm
-RUN . "$NVM_DIR/nvm.sh" && \
-    nvm install node
+# Set Node.js version using NVM
+RUN . /root/.nvm/nvm.sh && \
+    nvm install node && \
+    nvm alias default node
 
 # Update PATH
-ENV PATH $NVM_DIR/versions/node/$(nvm current)/bin:$PATH
+ENV PATH /root/.nvm/versions/node/$(nvm current)/bin:$PATH
 
 # Verify installation
 RUN node -v && npm -v
+
 
 
 
