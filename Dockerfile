@@ -70,6 +70,32 @@
 #     apt-get clean ; \
 #     rm -rf /var/lib/apt/lists/*
 
+
+
+# # Use the latest Ubuntu image as base working verison 
+# FROM ubuntu:latest
+
+# # Replace shell with bash to ensure compatibility with NVM scripts
+# SHELL ["/bin/bash", "-c"]
+
+# # Install dependencies required for NVM and Node.js
+# RUN apt-get update && apt-get install -y curl git ca-certificates && \
+#     apt-get clean && \
+#     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+
+# # Install NVM
+# ENV NVM_DIR /root/.nvm
+# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+# # Install Node.js using NVM and set it as the default version
+# RUN . "$NVM_DIR/nvm.sh" && nvm install node && nvm use node && nvm alias default node
+
+# # Update PATH to include the NVM Node.js bin directory
+# ENV PATH "$NVM_DIR/versions/node/$(nvm current)/bin:$PATH"
+
+# # Confirm installation
+# RUN node -v && npm -v
+
 # Use the latest Ubuntu image as base
 FROM ubuntu:latest
 
@@ -85,14 +111,17 @@ RUN apt-get update && apt-get install -y curl git ca-certificates && \
 ENV NVM_DIR /root/.nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
-# Install Node.js using NVM and set it as the default version
-RUN . "$NVM_DIR/nvm.sh" && nvm install node && nvm use node && nvm alias default node
+# Install specific Node.js version using NVM and set it as the default version
+# Also, use the same RUN command to check the Node.js and npm versions
+RUN . "$NVM_DIR/nvm.sh" && \
+    nvm install 20.10.0 && \
+    nvm use 20.10.0 && \
+    nvm alias default 20.10.0 && \
+    node -v && npm -v
 
 # Update PATH to include the NVM Node.js bin directory
 ENV PATH "$NVM_DIR/versions/node/$(nvm current)/bin:$PATH"
 
-# Confirm installation
-RUN node -v && npm -v
 
 
 
