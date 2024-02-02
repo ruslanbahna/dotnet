@@ -75,8 +75,7 @@ FROM ubuntu:latest
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive \
     TERM=xterm \
-    NVM_DIR=/usr/local/nvm \
-    NODE_VERSION=20.10.0
+    NVM_DIR=/usr/local/nvm
 
 # Install dependencies
 RUN apt-get update && \
@@ -84,21 +83,24 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-# Install NVM version 20.10.0
+# Install NVM
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v20.10.0/install.sh | bash
 
-# Install Node.js using NVM
+# Set Node.js version using NVM (adjust as needed)
 RUN . "$NVM_DIR/nvm.sh" && \
-    nvm install $NODE_VERSION && \
-    nvm use $NODE_VERSION && \
-    nvm alias default $NODE_VERSION
+    nvm install node && \
+    nvm alias default node
 
 # Cleanup
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # Update PATH
-ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+ENV PATH $NVM_DIR/versions/node/$(nvm current)/bin:$PATH
+
+# Verify installation
+RUN node -v && npm -v
+
 
 
 
