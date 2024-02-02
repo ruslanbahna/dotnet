@@ -77,26 +77,26 @@ FROM ubuntu:latest
 ENV DEBIAN_FRONTEND=noninteractive \
     TERM=xterm \
     NVM_DIR=/usr/local/nvm \
-    NODE_VERSION=20.10.1
+    NODE_VERSION=14.17.6
+
+# Use bash as the shell
+SHELL ["/bin/bash", "-c"]
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends wget curl git ca-certificates
-
-# Install NVM
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-
-# Install Node.js using NVM
-RUN . "$NVM_DIR/nvm.sh" && \
-    nvm install $NODE_VERSION && \
-    nvm use $NODE_VERSION && \
-    nvm alias default $NODE_VERSION
-
-# Cleanup
-RUN apt-get clean && \
+    apt-get install -y --no-install-recommends wget curl git ca-certificates && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-# Update PATH
+# Create NVM directory and set ownership
+RUN mkdir -p $NVM_DIR && chown -R <your-username>:<your-group> $NVM_DIR
+
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+# Set Node.js version for the user
+RUN echo "nvm install $NODE_VERSION" >> ~/.bashrc
+
+# Update PATH for the user
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 
