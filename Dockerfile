@@ -79,15 +79,21 @@ ENV DEBIAN_FRONTEND=noninteractive \
     NVM_DIR=/usr/local/nvm \
     NODE_VERSION=20.10.1
 
-# Install dependencies and Node.js via nvm
+# Install dependencies
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends wget curl git ca-certificates && \
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
-    . "$NVM_DIR/nvm.sh" && \
+    apt-get install -y --no-install-recommends wget curl git ca-certificates
+
+# Install NVM
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+# Install Node.js using NVM
+RUN . "$NVM_DIR/nvm.sh" && \
     nvm install $NODE_VERSION && \
     nvm use $NODE_VERSION && \
-    nvm alias default $NODE_VERSION && \
-    apt-get clean && \
+    nvm alias default $NODE_VERSION
+
+# Cleanup
+RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # Update PATH
