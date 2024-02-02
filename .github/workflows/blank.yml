@@ -29,6 +29,13 @@ jobs:
 
     - name: Clean up
       run: docker rmi my-image:latest
+    - name: test
+      env:
+        DOCKER_CONTENT_TRUST: 0
+      run: |
+        docker run my-image -di
+        docker exec my-mage /bin/bash -c "npm install benchmark"
+
 
 
 
