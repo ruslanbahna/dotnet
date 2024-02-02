@@ -99,9 +99,6 @@ RUN source /root/.nvm/nvm.sh && \
 # Update PATH
 ENV PATH /root/.nvm/versions/node/$(nvm current)/bin:$PATH
 
-# Verify installation
-RUN node -v && npm -v
-
 
 
 
