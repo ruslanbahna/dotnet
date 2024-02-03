@@ -99,15 +99,24 @@
 # Use the latest Ubuntu image as base
 FROM ubuntu:latest
 
+# Install curl
+RUN apt-get update && \
+    apt-get install -y curl && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install dependencies required for NVM and Node.js
-RUN apt-get update ; \
-    apt-get install -y curl ; \
-    curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash ; \
-    export NVM_DIR="$HOME/.nvm" ; \
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" ; \
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" ; \
-    nvm install 20.10.0 ;
+# Install NVM, Node.js, and set the environment variable
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash && \
+    export NVM_DIR="$HOME/.nvm" && \
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" && \
+    nvm install 20.10.0
+
+# Set the environment variable for future use
+ENV NVM_DIR="$HOME/.nvm"
+
+# Source nvm when starting the container
+CMD ["/bin/bash", "-c", "source $NVM_DIR/nvm.sh && node -v && npm -v"]
+
 
 
 
