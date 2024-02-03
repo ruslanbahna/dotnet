@@ -117,6 +117,9 @@ RUN . "$NVM_DIR/nvm.sh" && \
 # Add NVM, Node.js, and npm binaries to PATH
 ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
 
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["/bin/bash"]
 
 
