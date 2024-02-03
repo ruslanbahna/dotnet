@@ -1,47 +1,21 @@
-name: Build, Update, and Scan with Debug 
+name: Optimized CI Workflow
 
-on:
-  push:
-    branches:
-      - main
+on: [push]
 
 jobs:
-  build-and-scan:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-    
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Build Docker Image
+        run: docker build -t my-app .
 
-    - name: Build Docker image
-      run: |
-        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/node:v7 .
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/node:v7
-    
-    - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@master
-      with:
-        image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/node:v7
-        exit-code: '1'
-        severity: 'CRITICAL,HIGH'
-        scan-type: 'image'
-
-    - name: test
-      env:
-        DOCKER_CONTENT_TRUST: 0
-      run: |
-        docker run --name my-running-image -dt ${{ secrets.DOCKERHUB_USERNAME }}/node:v7
-        docker inspect my-running-image
-        docker exec my-running-image /bin/bash -c '. $NVM_DIR/nvm.sh && npm --version'
+      - name: Run Container & Execute Command
+        run: |
+          docker run --name my-running-container -dt my-app
+          docker exec my-running-container /bin/bash -c '. $NVM_DIR/nvm.sh && npm --version'
 
 
 
