@@ -20,7 +20,7 @@ jobs:
       run: docker build -t my-image .
     
     - name: install podman
-      run: apt-get install podman -y
+      run: sudo apt-get install podman -y
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
