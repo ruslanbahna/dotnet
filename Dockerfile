@@ -127,22 +127,20 @@ RUN apt-get update && apt-get install -y curl ca-certificates && \
 ENV NVM_DIR /root/.nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
-# Install Node.js LTS using NVM and set it as the default version
+# Install Node.js LTS using NVM
 RUN . "$NVM_DIR/nvm.sh" && \
-    nvm install --lts && \
-    nvm alias default $(nvm version --lts) && \
-    nvm use default
+    nvm install --lts
 
-# Use a single RUN instruction to add NVM to .bashrc for future interactive and non-interactive shells
+# Append NVM init to .bashrc for interactive shell sessions
 RUN echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc && \
-    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc && \
-    echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> ~/.bashrc
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc
 
-# Ensure the Node and NPM binaries are in PATH for non-interactive shells
-ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
+# Set PATH
+ENV PATH $NVM_DIR/versions/node/$(. "$NVM_DIR/nvm.sh" && nvm version --lts)/bin:$PATH
 
 # Confirm installation
 RUN node -v && npm -v
+
 
 
 
