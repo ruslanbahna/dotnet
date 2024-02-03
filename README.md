@@ -38,3 +38,25 @@ apt --yes autoremove: Automatically removes any unused packages.
 
 apt-get clean; rm -rf /var/lib/apt/lists/*: Cleans up the package cache and temporary files to reduce the image size.
 The --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt part of the RUN command in your Dockerfile is a Docker BuildKit feature. It mounts a cache for /var/cache/apt and /var/lib/apt directories during the build process. This cache helps to speed up the build by reusing the previously downloaded packages and apt indexes. It's particularly useful for iterative development and building images, as it prevents the need to re-download packages each time the image is built, thereby reducing build times.
+
+
+The Docker build logs you've shared confirm that Node.js and npm were successfully installed in the image using NVM. However, you're encountering issues when trying to use npm inside a running container. This problem often arises due to the way NVM initializes Node.js and npm environments, which is designed for interactive shell sessions.
+
+When you use docker exec to run a command inside a container, it doesn't necessarily invoke the full shell initialization process (e.g., sourcing .bashrc or .profile), which is where NVM typically gets initialized. As a result, the Node.js and npm installed by NVM may not be available in the PATH for non-interactive commands executed with docker exec.
+
+Solution
+To ensure that NVM and the installed Node.js and npm versions are properly initialized when running commands via docker exec, you need to explicitly source the NVM scripts as part of your command. This ensures that the necessary environment variables and PATH adjustments made by NVM are applied.
+
+Adjust your docker exec command to explicitly source NVM:
+
+bash
+Copy code
+docker exec my-running-image /bin/bash -c '. $NVM_DIR/nvm.sh && npm --version'
+Here, . $NVM_DIR/nvm.sh sources the NVM script to initialize the NVM environment, making node and npm available for use.
+
+Explanation
+. $NVM_DIR/nvm.sh: The dot (.) is a shorthand for the source command in bash, which executes the script in the current session. $NVM_DIR is an environment variable pointing to the directory where NVM is installed, which you've set in your Dockerfile.
+
+npm --version: This part of the command simply runs npm to output its version, verifying that npm is accessible.
+
+By including the NVM sourcing in your command, you ensure that NVM and the Node.js environment it manages are initialized for that command, even in a non-interactive shell session started by docker exec.
