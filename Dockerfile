@@ -131,15 +131,17 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
 RUN . "$NVM_DIR/nvm.sh" && \
     nvm install --lts
 
-# Append NVM init to .bashrc for interactive shell sessions
-RUN echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc && \
-    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc
+# Copy the entrypoint script into the image
+COPY docker-entrypoint.sh /usr/local/bin/
 
-# Set PATH
-ENV PATH $NVM_DIR/versions/node/$(. "$NVM_DIR/nvm.sh" && nvm version --lts)/bin:$PATH
+# Make the entrypoint script executable
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Confirm installation
-RUN node -v && npm -v
+# Set the entrypoint script as the default command
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+# By default, run a shell. Users can override this command with "docker run"
+CMD ["/bin/bash"]
 
 
 
