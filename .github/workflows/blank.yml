@@ -39,8 +39,8 @@ jobs:
       env:
         DOCKER_CONTENT_TRUST: 0
       run: |
-        podman run --name my-running-image -d ${{ secrets.DOCKERHUB_USERNAME }}/node:v1
-        podman exec my-running-image /bin/bash -c "npm install benchmark"
+        docker run --name my-running-image -d ${{ secrets.DOCKERHUB_USERNAME }}/node:v1
+        docker exec my-running-image /bin/bash -c "npm install benchmark"
 
 
 
