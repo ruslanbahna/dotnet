@@ -99,23 +99,20 @@
 # Use the latest Ubuntu image as base
 FROM ubuntu:latest
 
-# Install curl
-RUN apt-get update && \
-    apt-get install -y curl && \
-    rm -rf /var/lib/apt/lists/*
+# Set environment variables for NVM installation
+ENV NVM_DIR /root/.nvm \
+    NODE_VERSION stable
 
-# Install NVM, Node.js, and set the environment variable
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash && \
-    export NVM_DIR="$HOME/.nvm" && \
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" && \
-    nvm install 20.10.0
+# Install dependencies required for NVM and Node.js
+RUN apt-get update ; \
+    apt-get install -y curl build-essential libssl-dev ; \
+    rm -rf /var/lib/apt/lists/* ;\
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash ; \
+    . "$NVM_DIR/nvm.sh" && nvm install --lts && nvm use --lts ; \
 
-# Set the environment variable for future use
-ENV NVM_DIR="$HOME/.nvm"
+ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
 
-# Source nvm when starting the container
-CMD ["/bin/bash", "-c", "source $NVM_DIR/nvm.sh && node -v && npm -v"]
+
 
 
 
