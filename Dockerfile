@@ -99,23 +99,21 @@
 # Use the latest Ubuntu image as base
 FROM ubuntu:latest
 
-# Set environment variables for NVM installation
-ENV NVM_DIR /root/.nvm
-ENV NODE_VERSION stable
-
-# Install dependencies required for NVM and Node.js
-RUN apt-get update && \
-    apt-get install -y curl build-essential libssl-dev && \
+# Install dependencies and NVM in a single RUN command to reduce layers, and cleanup in the same layer
+RUN apt-get update && apt-get install -y curl build-essential libssl-dev && \
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
     rm -rf /var/lib/apt/lists/*
 
-# Install NVM
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+# Environment variable for NVM
+ENV NVM_DIR /root/.nvm
 
-# Install Node.js LTS and NPM
-RUN . "$NVM_DIR/nvm.sh" && nvm install --lts && nvm use --lts
-RUN apt-get purge curl build-essential libssl-dev -y
+# Install Node.js LTS and NPM, and cleanup in the same layer to keep the image size small
+RUN . "$NVM_DIR/nvm.sh" && \
+    nvm install --lts && \
+    nvm use --lts && \
+    nvm cache clear
 
-# Add NVM binaries to PATH
+# Add NVM, Node.js, and npm binaries to PATH
 ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
 
 
