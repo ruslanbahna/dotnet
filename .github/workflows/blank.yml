@@ -39,7 +39,7 @@ jobs:
       env:
         DOCKER_CONTENT_TRUST: 0
       run: |
-        docker run --name my-running-image -d ${{ secrets.DOCKERHUB_USERNAME }}/node:v1
+        docker run --name my-running-image -d ${{ secrets.DOCKERHUB_USERNAME }}/node:v1 tail -f /dev/null
         docker exec my-running-image /bin/bash -c "npm install benchmark"
 
 
