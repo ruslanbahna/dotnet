@@ -97,25 +97,54 @@
 # RUN node -v && npm -v
 
 # Use the latest Ubuntu image as base
+# FROM ubuntu:latest
+
+# # Install dependencies and NVM in a single RUN command to reduce layers, and cleanup in the same layer
+# RUN apt-get update && apt-get install -y curl ca-certificates && \
+#     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
+#     rm -rf /var/lib/apt/lists/*
+
+# # Environment variable for NVM
+# ENV NVM_DIR /root/.nvm
+
+# # Install Node.js LTS and NPM, and cleanup in the same layer to keep the image size small
+# RUN . "$NVM_DIR/nvm.sh" && \
+#     nvm install --lts && \
+#     nvm use --lts && \
+#     nvm cache clear && \
+#     rm -rf /var/lib/apt/lists/*
+
+# # Add NVM, Node.js, and npm binaries to PATH
+# ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
+
 FROM ubuntu:latest
 
-# Install dependencies and NVM in a single RUN command to reduce layers, and cleanup in the same layer
+# Install dependencies
 RUN apt-get update && apt-get install -y curl ca-certificates && \
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
     rm -rf /var/lib/apt/lists/*
 
-# Environment variable for NVM
+# Install NVM
 ENV NVM_DIR /root/.nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
-# Install Node.js LTS and NPM, and cleanup in the same layer to keep the image size small
-RUN . "$NVM_DIR/nvm.sh" && \
+# Install Node.js LTS using NVM and set it as the default version
+SHELL ["/bin/bash", "-c"]
+RUN source $NVM_DIR/nvm.sh && \
     nvm install --lts && \
-    nvm use --lts && \
-    nvm cache clear && \
-    rm -rf /var/lib/apt/lists/*
+    nvm alias default $(nvm version --lts) && \
+    nvm use default
 
-# Add NVM, Node.js, and npm binaries to PATH
+# Use the default profile script to ensure NVM, Node.js, and npm are correctly set up in any shell session
+RUN echo 'export NVM_DIR="$HOME/.nvm"' >> $HOME/.profile && \
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm' >> $HOME/.profile && \
+    echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >> $HOME/.profile
+
+# Ensure the Node and NPM binaries are in PATH for non-interactive shells
 ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
+
+# Confirm installation
+RUN node -v && npm -v
+
 
 
 
