@@ -96,30 +96,57 @@
 # # Confirm installation
 # RUN node -v && npm -v
 
-# Use the latest Ubuntu image as base
+# #good script for node on ubuntu bellow
+# FROM ubuntu:latest
+
+# # Install dependencies and NVM in a single RUN command to reduce layers, and cleanup in the same layer
+# RUN apt-get update && apt-get install -y curl ca-certificates && \
+#     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
+#     rm -rf /var/lib/apt/lists/*
+
+# # Environment variable for NVM
+# ENV NVM_DIR /root/.nvm
+
+# # Install Node.js LTS and NPM, and cleanup in the same layer to keep the image size small
+# RUN . "$NVM_DIR/nvm.sh" && \
+#     nvm install --lts && \
+#     nvm use --lts && \
+#     nvm cache clear && \
+#     rm -rf /var/lib/apt/lists/*
+
+# # Add NVM, Node.js, and npm binaries to PATH
+# ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
+
+# COPY docker-entrypoint.sh /usr/local/bin/
+# RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+# # ENTRYPOINT ["docker-entrypoint.sh"]
+# CMD ["/bin/bash"]
+
 FROM ubuntu:latest
 
-# Install dependencies and NVM in a single RUN command to reduce layers, and cleanup in the same layer
+# Install dependencies
 RUN apt-get update && apt-get install -y curl ca-certificates && \
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
     rm -rf /var/lib/apt/lists/*
 
-# Environment variable for NVM
+# Set up environment variables for NVM
 ENV NVM_DIR /root/.nvm
 
-# Install Node.js LTS and NPM, and cleanup in the same layer to keep the image size small
+# Install Node.js LTS using NVM and clear its cache
 RUN . "$NVM_DIR/nvm.sh" && \
     nvm install --lts && \
     nvm use --lts && \
-    nvm cache clear && \
-    rm -rf /var/lib/apt/lists/*
+    nvm cache clear
 
-# Add NVM, Node.js, and npm binaries to PATH
+# Append NVM initialization to .bashrc for automatic sourcing
+RUN echo 'export NVM_DIR="/root/.nvm"' >> /root/.bashrc && \
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm' >> /root/.bashrc && \
+    echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >> /root/.bashrc
+
+# Add Node.js and npm binaries to PATH
 ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
 
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-# ENTRYPOINT ["docker-entrypoint.sh"]
+# Default command
 CMD ["/bin/bash"]
 
 
