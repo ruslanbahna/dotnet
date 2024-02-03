@@ -100,7 +100,7 @@
 FROM ubuntu:latest
 
 # Install dependencies and NVM in a single RUN command to reduce layers, and cleanup in the same layer
-RUN apt-get update && apt-get install -y curl build-essential libssl-dev && \
+RUN apt-get update && apt-get install -y curl ca-certificates && \
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
     rm -rf /var/lib/apt/lists/*
 
@@ -111,7 +111,8 @@ ENV NVM_DIR /root/.nvm
 RUN . "$NVM_DIR/nvm.sh" && \
     nvm install --lts && \
     nvm use --lts && \
-    nvm cache clear
+    nvm cache clear && \
+    rm -rf /var/lib/apt/lists/*
 
 # Add NVM, Node.js, and npm binaries to PATH
 ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
