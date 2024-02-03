@@ -60,3 +60,49 @@ Explanation
 npm --version: This part of the command simply runs npm to output its version, verifying that npm is accessible.
 
 By including the NVM sourcing in your command, you ensure that NVM and the Node.js environment it manages are initialized for that command, even in a non-interactive shell session started by docker exec.
+
+```bash
+#!/bin/bash
+
+# Load NVM
+export NVM_DIR="/root/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# Execute the command passed to the docker run command
+exec "$@"
+
+
+FROM ubuntu:latest
+
+# Install dependencies and NVM in a single RUN command to reduce layers, and cleanup in the same layer
+RUN apt-get update && apt-get install -y curl ca-certificates && \
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
+    rm -rf /var/lib/apt/lists/*
+
+# Environment variable for NVM
+ENV NVM_DIR /root/.nvm
+
+# Install Node.js LTS and NPM, and cleanup in the same layer to keep the image size small
+RUN . "$NVM_DIR/nvm.sh" && \
+    nvm install --lts && \
+    nvm use --lts && \
+    nvm cache clear && \
+    rm -rf /var/lib/apt/lists/*
+
+# Add NVM, Node.js, and npm binaries to PATH
+ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
+
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["/bin/bash"]
+
+    - name: test
+      env:
+        DOCKER_CONTENT_TRUST: 0
+      run: |
+        docker run --name my-running-image -dt ${{ secrets.DOCKERHUB_USERNAME }}/node:v4
+        docker inspect my-running-image
+        docker exec my-running-image /bin/bash -c '. $NVM_DIR/nvm.sh && npm --version'
+```
