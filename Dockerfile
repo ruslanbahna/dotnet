@@ -119,7 +119,7 @@ ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-ENTRYPOINT ["docker-entrypoint.sh"]
+# ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["/bin/bash"]
 
 
