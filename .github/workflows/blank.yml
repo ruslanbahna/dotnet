@@ -15,7 +15,7 @@ jobs:
       - name: Run Container & Execute Command
         run: |
           docker run --name my-running-container -dt my-app
-          docker exec my-running-container /bin/bash -c 'npm --version'
+          docker exec my-running-container /bin/bash -c npm --version
 
 
 
