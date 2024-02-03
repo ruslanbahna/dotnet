@@ -41,7 +41,8 @@ jobs:
       run: |
         docker run --name my-running-image -dt ${{ secrets.DOCKERHUB_USERNAME }}/node:v4
         docker inspect my-running-image
-        docker exec my-running-image /bin/bash -c 'source /root/.nvm/nvm.sh && npm install benchmark'
+        docker exec my-running-image /bin/bash -c 'npm cache clean --force'
+
 
 
 
