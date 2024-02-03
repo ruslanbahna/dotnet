@@ -128,16 +128,15 @@ ENV NVM_DIR /root/.nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
 # Install Node.js LTS using NVM and set it as the default version
-SHELL ["/bin/bash", "-c"]
-RUN source $NVM_DIR/nvm.sh && \
+RUN . "$NVM_DIR/nvm.sh" && \
     nvm install --lts && \
     nvm alias default $(nvm version --lts) && \
     nvm use default
 
-# Use the default profile script to ensure NVM, Node.js, and npm are correctly set up in any shell session
-RUN echo 'export NVM_DIR="$HOME/.nvm"' >> $HOME/.profile && \
-    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm' >> $HOME/.profile && \
-    echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >> $HOME/.profile
+# Use a single RUN instruction to add NVM to .bashrc for future interactive and non-interactive shells
+RUN echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc && \
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc && \
+    echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> ~/.bashrc
 
 # Ensure the Node and NPM binaries are in PATH for non-interactive shells
 ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
