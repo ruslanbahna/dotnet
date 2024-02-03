@@ -113,6 +113,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
 
 # Install Node.js LTS and NPM
 RUN . "$NVM_DIR/nvm.sh" && nvm install --lts && nvm use --lts
+RUN apt-get purge curl build-essential libssl-dev -y
 
 # Add NVM binaries to PATH
 ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
