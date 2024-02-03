@@ -146,8 +146,6 @@ RUN echo 'export NVM_DIR="/root/.nvm"' >> /root/.bashrc && \
 # Add Node.js and npm binaries to PATH
 ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
 
-# Default command
-CMD ["/bin/bash"]
 
 
 
