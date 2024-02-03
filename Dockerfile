@@ -100,18 +100,22 @@
 FROM ubuntu:latest
 
 # Set environment variables for NVM installation
-ENV NVM_DIR /root/.nvm \
-    NODE_VERSION stable
+ENV NVM_DIR /root/.nvm
+ENV NODE_VERSION stable
 
 # Install dependencies required for NVM and Node.js
-RUN apt-get update ; \
-    apt-get install -y curl build-essential libssl-dev ; \
-    rm -rf /var/lib/apt/lists/* ;\
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash ; \
-    . "$NVM_DIR/nvm.sh" && nvm install --lts && nvm use --lts ; \
+RUN apt-get update && \
+    apt-get install -y curl build-essential libssl-dev && \
+    rm -rf /var/lib/apt/lists/*
 
+# Install NVM
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+# Install Node.js LTS and NPM
+RUN . "$NVM_DIR/nvm.sh" && nvm install --lts && nvm use --lts
+
+# Add NVM binaries to PATH
 ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
-
 
 
 
