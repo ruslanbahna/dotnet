@@ -36,8 +36,8 @@ jobs:
       env:
         DOCKER_CONTENT_TRUST: 0
       run: |
-        podman run my-image -di
-        podman exec my-mage /bin/bash -c "npm install benchmark"
+        podman run --name my-running-image -d my-image
+        podman exec my-running-image /bin/bash -c "npm install benchmark"
 
 
 
