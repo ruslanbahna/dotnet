@@ -97,50 +97,26 @@
 # RUN node -v && npm -v
 
 # Use the latest Ubuntu image as base
-# FROM ubuntu:latest
-
-# # Install dependencies and NVM in a single RUN command to reduce layers, and cleanup in the same layer
-# RUN apt-get update && apt-get install -y curl ca-certificates && \
-#     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
-#     rm -rf /var/lib/apt/lists/*
-
-# # Environment variable for NVM
-# ENV NVM_DIR /root/.nvm
-
-# # Install Node.js LTS and NPM, and cleanup in the same layer to keep the image size small
-# RUN . "$NVM_DIR/nvm.sh" && \
-#     nvm install --lts && \
-#     nvm use --lts && \
-#     nvm cache clear && \
-#     rm -rf /var/lib/apt/lists/*
-
-# # Add NVM, Node.js, and npm binaries to PATH
-# ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
-
 FROM ubuntu:latest
 
-# Install dependencies
+# Install dependencies and NVM in a single RUN command to reduce layers, and cleanup in the same layer
 RUN apt-get update && apt-get install -y curl ca-certificates && \
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
     rm -rf /var/lib/apt/lists/*
 
-# Install NVM
+# Environment variable for NVM
 ENV NVM_DIR /root/.nvm
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
-# Install Node.js LTS using NVM
+# Install Node.js LTS and NPM, and cleanup in the same layer to keep the image size small
 RUN . "$NVM_DIR/nvm.sh" && \
-    nvm install --lts
+    nvm install --lts && \
+    nvm use --lts && \
+    nvm cache clear && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copy the entrypoint script into the image
-COPY docker-entrypoint.sh /usr/local/bin/
+# Add NVM, Node.js, and npm binaries to PATH
+ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
 
-# Make the entrypoint script executable
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-# Set the entrypoint script as the default command
-ENTRYPOINT ["docker-entrypoint.sh"]
-
-# By default, run a shell. Users can override this command with "docker run"
 CMD ["/bin/bash"]
 
 
