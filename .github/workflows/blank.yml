@@ -16,7 +16,7 @@ jobs:
         run: docker run --name my-running-container -dt my-app
       
       - name: Install Dependencies
-        run: docker exec my-running-container /bin/bash -c 'npm install benchmark'
+        run: docker exec my-running-container /bin/bash -c 'npm version'
 
 
 
