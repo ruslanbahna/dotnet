@@ -12,11 +12,14 @@ jobs:
       - name: Build Docker Image
         run: docker build -t my-app .
 
-      - name: Run Container & Execute Command
-        run: |
-          docker run --name my-running-container -dt my-app
-          docker exec my-running-container /bin/bash -c 'source $NVM_DIR/nvm.sh && npm cache clean --force && npm install benchmark'
+      - name: Run Container
+        run: docker run --name my-running-container -dt my-app
 
+      - name: Clean npm Cache
+        run: docker exec my-running-container /bin/bash -c 'source $NVM_DIR/nvm.sh && npm cache clean --force'
+
+      - name: Install Dependencies
+        run: docker exec my-running-container /bin/bash -c 'source $NVM_DIR/nvm.sh && npm install benchmark'
 
 
 
