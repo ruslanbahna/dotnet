@@ -122,37 +122,15 @@
 # # ENTRYPOINT ["docker-entrypoint.sh"]
 # CMD ["/bin/bash"]
 
-FROM ubuntu:latest
+FROM ubuntu
 
-# Install dependencies
-RUN apt-get update && apt-get install -y curl ca-certificates && \
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
-    rm -rf /var/lib/apt/lists/*
-
-# Environment variable for NVM
-ENV NVM_DIR /root/.nvm
-
-# Install Node.js LTS and NPM
-RUN . "$NVM_DIR/nvm.sh" && \
-    nvm install --lts && \
-    nvm use --lts && \
-    nvm cache clear
-
-# Append NVM initialization to .bashrc
-RUN echo 'export NVM_DIR="/root/.nvm"' >> /root/.bashrc && \
-    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /root/.bashrc && \
-    echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /root/.bashrc
-
-# Add Node.js and npm binaries to PATH
-ENV PATH $NVM_DIR/versions/node/$(nvm version --lts)/bin:$PATH
-
-CMD ["/bin/bash"]
-
-
-
-
-
-
+ENV NVM_DIR /usr/local/nvm
+ENV NODE_VERSION v20.10.0
+RUN mkdir -p /usr/local/nvm && apt-get update && echo "y" | apt-get install curl
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+RUN /bin/bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm use --delete-prefix $NODE_VERSION"
+ENV NODE_PATH $NVM_DIR/versions/node/$NODE_VERSION/bin
+ENV PATH $NODE_PATH:$PATH
 
 
 
