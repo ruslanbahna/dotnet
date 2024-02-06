@@ -1,3 +1,5 @@
+# Use the latest version of Ubuntu as the base image
+FROM ubuntu:latest
 
 # Install curl and other necessary dependencies
 RUN apt-get update && \
@@ -17,6 +19,7 @@ RUN npm install -g yarn
 
 # Update npm to version 10.4.0
 RUN npm install -g npm@10.4.0
+
 
 
 
