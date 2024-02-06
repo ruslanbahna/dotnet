@@ -15,16 +15,8 @@ jobs:
       - name: Run Container
         run: docker run --name my-running-container -dt my-app
       
-      # - name: Install Dependencies Using npm ci
-      #   run: docker exec my-running-container /bin/bash -c 'source $NVM_DIR/nvm.sh && npm ci'
-
-      - name: Clean Install Dependencies
-        run: |
-          docker exec my-running-container /bin/bash -c 'source $NVM_DIR/nvm.sh && rm -rf node_modules && npm cache clean --force && npm install benchmark'
-
-
       - name: Install Dependencies
-        run: docker exec my-running-container /bin/bash -c 'source $NVM_DIR/nvm.sh && npm install benchmark'
+        run: docker exec my-running-container /bin/bash -c 'npm install benchmark'
 
 
 
