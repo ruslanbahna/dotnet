@@ -15,7 +15,7 @@ jobs:
       - name: Run Container & Execute Command
         run: |
           docker run --name my-running-container -dt my-app
-          docker exec my-running-container /bin/bash -c 'source $NVM_DIR/nvm.sh && npm cache clean --force && npm install benchmark"
+          docker exec my-running-container /bin/bash -c 'source $NVM_DIR/nvm.sh && npm cache clean --force && npm install benchmark'
 
 
 
