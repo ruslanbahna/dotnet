@@ -5,14 +5,14 @@ FROM ubuntu:latest
 # Install OpenJDK and other dependencies, avoiding unnecessary packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        openjdk-11-jre-headless \
+        openjdk-17-jre-headless \
         wget \
         ca-certificates \
         python3 \
         python3-pip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
+RUN apt-get upgrade
 # Set the Java environment variable
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 
