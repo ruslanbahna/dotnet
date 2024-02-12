@@ -41,7 +41,7 @@ jobs:
           exit-code: '1' # Fail the job if vulnerabilities are found
           severity: HIGH,CRITICAL 
       
-            - name: Build Docker image
+            - name: push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
