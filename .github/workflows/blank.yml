@@ -34,6 +34,8 @@ jobs:
 
       - name: Scan the Docker image with Trivy
         uses: aquasecurity/trivy-action@master
+        env:
+          DOCKER_CONTENT_TRUST: 0
         with:
           image-ref: ${{ env.IMAGE_NAME }}:latest
           exit-code: '1' # Fail the job if vulnerabilities are found
