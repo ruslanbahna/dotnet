@@ -23,7 +23,24 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build and Push Docker image
+      - name: Build Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false # Changed to false to build but not push
+          tags: ${{ env.IMAGE_NAME }}:latest
+          load: true # Needed to load the built image into Docker's image store for scanning
+
+      - name: Scan the Docker image with Trivy
+        uses: aquasecurity/trivy-action@v0.3.0
+        with:
+          image-ref: ${{ env.IMAGE_NAME }}:latest
+          format: 'table'
+          exit-code: '1' # Fail the job if vulnerabilities are found
+          ignore-unfixed: true # Optional: ignore unfixed vulnerabilities
+
+      - name: Push Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
