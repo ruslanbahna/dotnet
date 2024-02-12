@@ -49,6 +49,15 @@ jobs:
           push: true # Changed to false to build but not push
           tags: ${{ env.IMAGE_NAME }}:latest
 
+      - name: Test Node
+        env: 
+          DOCKER_CONTENT_TRUST: 0
+        run: |
+          docker run --name=node-test -di ruslanbahna/hardened-node-alpine:latest
+          docker inspect ruslanbahna/hardened-node-alpine:latest
+          docker cp ./benchmark.js node-test:/benchmark.js
+          docker exec node-test bin/bash "yarn add benchmark && node benchmark.js"
+
 
 
 
