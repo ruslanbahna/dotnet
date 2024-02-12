@@ -56,7 +56,7 @@ jobs:
           docker run --name=node-test -di ruslanbahna/hardened-node-alpine:latest
           docker inspect ruslanbahna/hardened-node-alpine:latest
           docker cp ./benchmark.js node-test:/benchmark.js
-          docker exec node-test bin/sh  -c "yarn add benchmark && node benchmark.js"
+          docker exec node-test /bin/sh  -c "yarn add benchmark && node benchmark.js"
 
 
 
