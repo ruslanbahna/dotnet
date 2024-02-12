@@ -3,6 +3,7 @@
 FROM ubuntu:latest
 
 # Install OpenJDK and other dependencies, avoiding unnecessary packages
+# Install OpenJDK 17 and other dependencies, avoiding unnecessary packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         openjdk-17-jre-headless \
@@ -10,11 +11,10 @@ RUN apt-get update && \
         ca-certificates \
         python3 \
         python3-pip && \
-    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-RUN apt-get upgrade
-# Set the Java environment variable
-ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
+
+# Set the Java environment variable (adjust if necessary for OpenJDK 17)
+ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
 
 # Define Spark and Hadoop versions to install
 ENV SPARK_VERSION=3.3.4 \
@@ -22,7 +22,7 @@ ENV SPARK_VERSION=3.3.4 \
     SPARK_HOME=/opt/spark
 
 # Download and unpack Apache Spark
-RUN wget --no-verbose https://archive.apache.org/dist/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION.tgz && \
+RUN wget --no-verbose https://dlcdn.apache.org/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION.tgz && \
     tar -xzf spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION.tgz -C /opt && \
     mv /opt/spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION $SPARK_HOME && \
     rm spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION.tgz
