@@ -3,7 +3,7 @@ name: node-alpine-test
 on: [push]
 
 env:
-  IMAGE_NAME: ${{ env.REGISRTY }}/hardened-node-alpine
+  IMAGE_NAME: ${{ HUB_REGISTRY }}/hardened-node-alpine
   DOCKER_CONTENT_TRUST: 1
   BASE_IMAGE: node:alpine
 
