@@ -22,10 +22,10 @@ ENV SPARK_VERSION=3.3.4 \
     SPARK_HOME=/opt/spark
 
 # Download and unpack Apache Spark
-RUN wget --no-verbose https://dlcdn.apache.org/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop3.tgz && \
-    tar -xzf spark-$SPARK_VERSION-bin-hadoop3.tgz -C /opt && \
-    mv /opt/spark-$SPARK_VERSION-bin-hadoop3 $SPARK_HOME && \
-    rm spark-$SPARK_VERSION-bin-hadoop3.tgz
+RUN wget --no-verbose https://dlcdn.apache.org/spark/spark-3.3.4/spark-3.3.4-bin-hadoop3.tgz && \
+    tar -xzf spark-3.3.4-bin-hadoop3.tgz -C /opt && \
+    mv /opt/spark-3.3.4-bin-hadoop3 $SPARK_HOME && \
+    rm spark-3.3.4-bin-hadoop3.tgz
 # Update PATH environment variable
 ENV PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
 
