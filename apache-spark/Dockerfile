@@ -1,5 +1,5 @@
 # Base image
-FROM ubuntu:20.04 as builder
+FROM ubuntu:latest
 
 # Install dependencies for fetching and verifying Spark
 RUN apt-get update && \
