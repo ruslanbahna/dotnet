@@ -1,6 +1,8 @@
 FROM node:alpine
 
-RUN akp upgrade
+RUN \
+    --mount=type=cache,target=/var/cache/apk \
+    apk upgrade ;
 
 
 
