@@ -27,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
+          file: ./hardened-node-alpine/Dockerfile
           push: false # Changed to false to build but not push
           tags: ${{ env.IMAGE_NAME }}:latest
           load: true # Needed to load the built image into Docker's image store for scanning
