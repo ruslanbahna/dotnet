@@ -40,7 +40,14 @@ jobs:
           image-ref: ${{ env.IMAGE_NAME }}:latest
           exit-code: '1' # Fail the job if vulnerabilities are found
           severity: HIGH,CRITICAL 
-
+      
+            - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true # Changed to false to build but not push
+          tags: ${{ env.IMAGE_NAME }}:latest
 
 
 
