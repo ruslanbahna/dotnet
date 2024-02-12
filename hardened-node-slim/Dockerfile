@@ -5,7 +5,7 @@ LABEL Name-hardened-node-slim \
 ENV DEBIAN FRONTEND-noninteractive \
     TERM-xterm
 RUN \
-    --mount-type-cache, target-/var/cache/apt --mount-type-cache, target-/var/lib/apt \
+    --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt \
     apt-get update ; \
 #Always upgrade to the latest version of packages even if the base image is published regularly.
 # For explanation of unusual switches, see https://askubuntu.com/questions/258219/how-do-i-make-apt-get-install-less-noisy
