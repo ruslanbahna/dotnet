@@ -9,6 +9,6 @@ RUN \
     apt-get update ; \
 #Always upgrade to the latest version of packages even if the base image is published regularly.
 # For explanation of unusual switches, see https://askubuntu.com/questions/258219/how-do-i-make-apt-get-install-less-noisy
-    apt-get --no-install-recommends --quiet --yes -o-Dpkg: :Use-Pty-0 upgrade ; \
+    apt-get --no-install-recommends --quiet --yes -o-Dpkg::Use-Pty-0 upgrade ; \
 #Remove unused packages left over from the upgrade.
-    apt-get--yes autoremove ; \
+    apt-get --yes autoremove ; \
