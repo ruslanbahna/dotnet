@@ -17,7 +17,7 @@ RUN apt-get upgrade
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 
 # Define Spark and Hadoop versions to install
-ENV SPARK_VERSION=3.2.1 \
+ENV SPARK_VERSION=3.3.4 \
     HADOOP_VERSION=3.2 \
     SPARK_HOME=/opt/spark
 
