@@ -1,39 +1,24 @@
-# Base image
-# Use the latest Ubuntu as the base image
 FROM ubuntu:latest
 
-# Install OpenJDK and other dependencies, avoiding unnecessary packages
-# Install OpenJDK 17 and other dependencies, avoiding unnecessary packages
-# Install OpenJDK 17 and other dependencies, avoiding unnecessary packages
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
         openjdk-17-jre-headless \
         wget \
         ca-certificates \
         python3 \
-        python3-pip && \
-    rm -rf /var/lib/apt/lists/*
+        python3-pip \
+    && rm -rf /var/lib/apt/lists/*
 
-# Set the Java environment variable (adjust if necessary for OpenJDK 17)
-ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
+ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64 \
+    SPARK_HOME /opt/spark
 
-# Define Spark version to install
-ENV SPARK_VERSION=3.3.4 \
-    SPARK_HOME=/opt/spark
+RUN wget --no-verbose https://dlcdn.apache.org/spark/spark-3.3.4/spark-3.3.4-bin-hadoop3.tgz \
+    && tar -xzf spark-3.3.4-bin-hadoop3.tgz -C /opt \
+    && mv /opt/spark-3.3.4-bin-hadoop3 $SPARK_HOME \
+    && rm spark-3.3.4-bin-hadoop3.tgz
 
-# Download and unpack Apache Spark
-RUN wget --no-verbose https://dlcdn.apache.org/spark/spark-3.3.4/spark-3.3.4-bin-hadoop3.tgz && \
-    tar -xzf spark-3.3.4-bin-hadoop3.tgz -C /opt && \
-    mv /opt/spark-3.3.4-bin-hadoop3 $SPARK_HOME && \
-    rm spark-3.3.4-bin-hadoop3.tgz
-# Update PATH environment variable
-ENV PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
+COPY app /opt/app
 
-# Expose ports for Spark UI and other services
-EXPOSE 4040 7077 8080 8081
-
-# Set working directory
+ENV PATH $PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
 WORKDIR $SPARK_HOME
 
-# Default command: start the Spark shell
 CMD ["bin/spark-shell"]
