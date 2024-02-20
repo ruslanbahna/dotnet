@@ -1,24 +1,25 @@
 FROM ubuntu:latest
 
-# Install Java and wget
+# Install Java
 RUN apt-get update && \
-    apt-get install -y openjdk-11-jdk wget && \
+    apt-get install -y openjdk-11-jdk wget tar && \
     apt-get clean;
 
 # Set Java environment variable
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 
-# Download and unpack Spark
-RUN wget -q https://dlcdn.apache.org/spark/spark-3.4.2/spark-3.4.2-bin-hadoop3.tgz && \
-    tar -xzf spark-3.4.2-bin-hadoop3.tgz && \
-    mv spark-3.4.2-bin-hadoop3 /spark
+# Download and install Spark
+RUN wget -q https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3.tgz && \
+    tar -xzf spark-3.5.0-bin-hadoop3.tgz -C /opt && \
+    rm spark-3.5.0-bin-hadoop3.tgz
 
 # Set Spark environment variable
-ENV SPARK_HOME /spark
+ENV SPARK_HOME /opt/spark-3.5.0-bin-hadoop3
 
-# Expose port 8080 for Spark Web UI
+# Expose port for Spark Web UI
 EXPOSE 8080
 
-# Start Spark shell (or any other Spark component you need)
-CMD ["/spark/bin/spark-shell"]
+# Set working directory and default command
+WORKDIR /opt/spark-3.5.0-bin-hadoop3
+CMD ["/bin/bash"]
 
