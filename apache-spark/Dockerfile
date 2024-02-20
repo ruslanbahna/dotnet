@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 # Install Java
 RUN apt-get update && \
-    apt-get install -y openjdk-11-jdk && \
+    apt-get install -y openjdk-11-jdk  wget && \
     apt-get clean;
 
 # Set Java environment variable
