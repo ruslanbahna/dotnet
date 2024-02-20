@@ -29,5 +29,3 @@ EXPOSE 8080
 # Set working directory and default command
 WORKDIR /opt/sspark-3.5.0-bin-hadoop3-scala2.13
 CMD ["/bin/bash"]
-
-https://repo1.maven.org/maven2/com/google/protobuf/protobuf-java/4.26.0-RC2/protobuf-java-4.26.0-RC2.jar
