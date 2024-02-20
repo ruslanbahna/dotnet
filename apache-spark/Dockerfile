@@ -16,7 +16,7 @@ RUN wget -q -O /opt/spark-3.5.0-bin-hadoop3-scala2.13/jars/jackson-databind-2.16
     https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-databind-2.16.1.jar
 RUN wget -q -O /opt/spark-3.5.0-bin-hadoop3-scala2.13/jars/jackson-annotations-2.16.1.jar \
     https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-annotations-2.16.1.jar
-RUN wget -q -O /opt/spark-3.5.0-bin-hadoop3-scala2.13/jars/jjackson-core-2.16.1.jar \
+RUN wget -q -O /opt/spark-3.5.0-bin-hadoop3-scala2.13/jars/jackson-core-2.16.1.jar \
     https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-core-2.16.1.jar
 
 # Set Spark environment variable
