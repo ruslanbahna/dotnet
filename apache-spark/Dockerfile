@@ -16,6 +16,9 @@ RUN wget -q https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-ha
 # Set Spark environment variable
 ENV SPARK_HOME /opt/spark-3.5.0-bin-hadoop3
 
+RUN wget -q -O /opt/spark/jars/jackson-databind-2.16.1.jar \
+    https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-databind-2.16.1.jar
+
 # Expose port for Spark Web UI
 EXPOSE 8080
 
