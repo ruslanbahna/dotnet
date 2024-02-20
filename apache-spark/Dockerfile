@@ -14,8 +14,10 @@ RUN wget -q https://dlcdn.apache.org/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3-s
     rm spark-3.5.0-bin-hadoop3-scala2.13.tgz
 RUN wget -q -O /opt/spark-3.5.0-bin-hadoop3-scala2.13/jars/jackson-databind-2.16.1.jar \
     https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-databind-2.16.1.jar
-RUN wget -q -O /opt/spark-3.5.0-bin-hadoop3-scala2.13/jars/jackson-dataformat-yaml-2.15.2.jar \
-    https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-dataformat-yaml-2.15.2.jar
+RUN wget -q -O /opt/spark-3.5.0-bin-hadoop3-scala2.13/jars/jackson-dataformat-yaml-2.16.1.jar \
+    https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-dataformat-yaml-2.16.1.jar
+RUN wget -q -O /opt/spark-3.5.0-bin-hadoop3-scala2.13/jars/jackson-datatype-jsr310-2.16.1.jar \
+    https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-datatype-jsr310-2.16.1.jar
 
 # Set Spark environment variable
 ENV SPARK_HOME /opt/spark-3.5.0-bin-hadoop3-scala2.13
@@ -26,8 +28,3 @@ EXPOSE 8080
 # Set working directory and default command
 WORKDIR /opt/sspark-3.5.0-bin-hadoop3-scala2.13
 CMD ["/bin/bash"]
-
-
-
-# https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-dataformat-yaml-2.15.2.jar
-# https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-datatype-jsr310-2.15.2.jar
