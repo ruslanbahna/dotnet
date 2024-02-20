@@ -16,6 +16,9 @@ RUN wget -q -O /opt/spark-3.5.0-bin-hadoop3-scala2.13/jars/jackson-databind-2.16
     https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-databind-2.16.1.jar
 RUN wget -q -O /opt/spark-3.5.0-bin-hadoop3-scala2.13/jars/jackson-dataformat-yaml-2.16.1.jar \
     https://repo1.maven.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.16.1/jackson-dataformat-yaml-2.16.1.jar
+RUN wget -q -O /opt/spark-3.5.0-bin-hadoop3-scala2.13/jars/protobuf-java-4.26.0-RC2.jar \
+    https://repo1.maven.org/maven2/com/google/protobuf/protobuf-java/4.26.0-RC2/protobuf-java-4.26.0-RC2.jar
+RUN rm /opt/spark-3.5.0-bin-hadoop3-scala2.13/jars/mesos-1.4.3-shaded-protobuf.jar
 
 # Set Spark environment variable
 ENV SPARK_HOME /opt/spark-3.5.0-bin-hadoop3-scala2.13
@@ -26,3 +29,5 @@ EXPOSE 8080
 # Set working directory and default command
 WORKDIR /opt/sspark-3.5.0-bin-hadoop3-scala2.13
 CMD ["/bin/bash"]
+
+https://repo1.maven.org/maven2/com/google/protobuf/protobuf-java/4.26.0-RC2/protobuf-java-4.26.0-RC2.jar
