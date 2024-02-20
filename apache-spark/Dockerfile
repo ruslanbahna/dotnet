@@ -12,8 +12,6 @@ ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 RUN wget -q https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3.tgz && \
     tar -xzf spark-3.5.0-bin-hadoop3.tgz -C /opt && \
     rm spark-3.5.0-bin-hadoop3.tgz
-# Download the Hadoop client runtime JAR
-RUN wget -q -P /opt/spark/jars https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-client-runtime/3.3.6/hadoop-client-runtime-3.3.6.jar
 
 # Set Spark environment variable
 ENV SPARK_HOME /opt/spark-3.5.0-bin-hadoop3
