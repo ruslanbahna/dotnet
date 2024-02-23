@@ -20,5 +20,5 @@ ENV SPARK_HOME /opt/spark-3.5.0-bin-hadoop3-scala2.13
 EXPOSE 8080
 
 # Set working directory and default command
-WORKDIR /opt/sspark-3.5.0-bin-hadoop3-scala2.13
+WORKDIR /opt/spark-3.5.0-bin-hadoop3-scala2.13
 CMD ["/bin/bash"]
