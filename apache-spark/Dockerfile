@@ -9,7 +9,7 @@ RUN apt-get update && \
 ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
 
 # Download and install Spark
-RUN wget -q https://dlcdn.apache.org/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3-scala2.13.tgz && \
+RUN wget -q https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3-scala2.13.tgz && \
     tar -xzf spark-3.5.0-bin-hadoop3-scala2.13.tgz -C /opt && \
     rm spark-3.5.0-bin-hadoop3-scala2.13.tgz
 
