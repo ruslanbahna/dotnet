@@ -87,12 +87,20 @@ RUN set -ex; \
     cd ..; \
     rm -rf "$SPARK_TMP";
 
+# Copy the entrypoint script into the image
 COPY ./entrypoint.sh /opt/
 
+# Set the correct permissions for the entrypoint script
+RUN chmod +x /opt/entrypoint.sh
+
+# Set the SPARK_HOME environment variable
 ENV SPARK_HOME /opt/spark
 
+# Set the working directory to the Spark work directory
 WORKDIR /opt/spark/work-dir
 
+# Set the user to 'spark'
 USER spark
 
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
+# Set the entrypoint to the entrypoint script
+ENTRYPOINT ["/opt/entrypoint.sh"]
