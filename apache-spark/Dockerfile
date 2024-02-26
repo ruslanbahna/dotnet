@@ -64,14 +64,13 @@ RUN set -ex; \
 # Install Apache Spark
 # https://downloads.apache.org/spark/KEYS
 ENV SPARK_TGZ_URL=https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3.tgz \
-    SPARK_TGZ_ASC_URL=https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3.tgz.asc \
+    SPARK_TGZ_ASC_URL=https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3.tgz.asc
 
 RUN set -ex; \
     export SPARK_TMP="$(mktemp -d)"; \
     cd $SPARK_TMP; \
     wget -nv -O spark.tgz "$SPARK_TGZ_URL"; \
     wget -nv -O spark.tgz.asc "$SPARK_TGZ_ASC_URL"; \
-    \
     tar -xf spark.tgz --strip-components=1; \
     chown -R spark:spark .; \
     mv jars /opt/spark/; \
