@@ -121,9 +121,9 @@ ENV SPARK_HOME /opt/spark-3.5.0-bin-hadoop3-scala2.13
 
 # Download and extract Hadoop binaries with native libraries
 # Note: Replace "hadoop-x.y.z" with the version compatible with Spark's Hadoop version
-RUN wget -q https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6-src.tar.gz && \
-    tar -xzf hadoop-3.3.6-src.tar.gz -C /opt && \
-    rm hadoop-3.3.6-src.tar.gz
+RUN wget -q https://archive.apache.org/dist/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz && \
+    tar -xzf hadoop-3.3.6.tar.gz -C /opt && \
+    rm hadoop-3.3.6.tar.gz
 
 # Set Hadoop environment variable
 ENV HADOOP_HOME /opt/hadoop-3.3.6-src
