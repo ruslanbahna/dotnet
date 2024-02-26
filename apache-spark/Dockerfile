@@ -2,11 +2,11 @@ FROM ubuntu:latest
 
 # Install Java
 RUN apt-get update && \
-    apt-get install -y openjdk-17-jdk wget tar && \
+    apt-get install -y openjdk-21-jdk wget tar && \
     apt-get clean;
 
 # Set Java environment variable
-ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
+ENV JAVA_HOME /usr/lib/jvm/java-21-openjdk-amd64
 
 # Download and install Spark
 RUN wget -q https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3-scala2.13.tgz && \
@@ -19,7 +19,7 @@ ENV SPARK_HOME /opt/spark-3.5.0-bin-hadoop3-scala2.13
 
 # Set working directory and default command
 WORKDIR /opt/spark-3.5.0-bin-hadoop3-scala2.13
-CMD ["/bin/bash"]
+
 
 # #
 # # Licensed to the Apache Software Foundation (ASF) under one or more
