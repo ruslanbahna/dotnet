@@ -95,7 +95,7 @@ RUN set -ex; \
     cd ..; \
     rm -rf "$SPARK_TMP";
 
-COPY entrypoint.sh /opt/
+COPY ./entrypoint.sh /opt/
 
 ENV SPARK_HOME /opt/spark
 
