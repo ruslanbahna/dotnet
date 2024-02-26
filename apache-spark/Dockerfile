@@ -126,7 +126,7 @@ RUN wget -q https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6-src
     rm hadoop-3.3.6-src.tar.gz
 
 # Set Hadoop environment variable
-ENV HADOOP_HOME /opt/hadoop-3.3.6-src.tar.gz
+ENV HADOOP_HOME /opt/hadoop-3.3.6-src
 
 # Update LD_LIBRARY_PATH to include Hadoop native libraries
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$HADOOP_HOME/lib/native
