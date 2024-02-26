@@ -71,6 +71,7 @@ RUN set -ex; \
     cd $SPARK_TMP; \
     wget -nv -O spark.tgz "$SPARK_TGZ_URL"; \
     wget -nv -O spark.tgz.asc "$SPARK_TGZ_ASC_URL"; \
+    \
     tar -xf spark.tgz --strip-components=1; \
     chown -R spark:spark .; \
     mv jars /opt/spark/; \
