@@ -106,3 +106,5 @@ CMD ["/bin/bash"]
         docker inspect my-running-image
         docker exec my-running-image /bin/bash -c '. $NVM_DIR/nvm.sh && npm --version'
 ```
+
+GPG public brew 69E208490FF463BADD5FC2440DEDEA0A1ED50784
