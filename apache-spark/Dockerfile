@@ -1,24 +1,24 @@
-FROM ubuntu:latest
+# FROM ubuntu:latest
 
-# Install Java
-RUN apt-get update && \
-    apt-get install -y openjdk-21-jdk wget tar && \
-    apt-get clean;
+# # Install Java
+# RUN apt-get update && \
+#     apt-get install -y openjdk-21-jdk wget tar && \
+#     apt-get clean;
 
-# Set Java environment variable
-ENV JAVA_HOME /usr/lib/jvm/java-21-openjdk-amd64
+# # Set Java environment variable
+# ENV JAVA_HOME /usr/lib/jvm/java-21-openjdk-amd64
 
-# Download and install Spark
-RUN wget -q https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3-scala2.13.tgz && \
-    tar -xzf spark-3.5.0-bin-hadoop3-scala2.13.tgz -C /opt && \
-    rm spark-3.5.0-bin-hadoop3-scala2.13.tgz
+# # Download and install Spark
+# RUN wget -q https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3-scala2.13.tgz && \
+#     tar -xzf spark-3.5.0-bin-hadoop3-scala2.13.tgz -C /opt && \
+#     rm spark-3.5.0-bin-hadoop3-scala2.13.tgz
 
-# Set Spark environment variable
-ENV SPARK_HOME /opt/spark-3.5.0-bin-hadoop3-scala2.13
+# # Set Spark environment variable
+# ENV SPARK_HOME /opt/spark-3.5.0-bin-hadoop3-scala2.13
 
 
-# Set working directory and default command
-WORKDIR /opt/spark-3.5.0-bin-hadoop3-scala2.13
+# # Set working directory and default command
+# WORKDIR /opt/spark-3.5.0-bin-hadoop3-scala2.13
 
 
 # #
@@ -100,3 +100,36 @@ WORKDIR /opt/spark-3.5.0-bin-hadoop3-scala2.13
 
 # # Set the entrypoint to the entrypoint script
 # ENTRYPOINT ["/opt/entrypoint.sh"]
+
+FROM ubuntu:latest
+
+# Install Java and other necessary utilities
+RUN apt-get update && \
+    apt-get install -y openjdk-21-jdk wget tar && \
+    apt-get clean;
+
+# Set Java environment variable
+ENV JAVA_HOME /usr/lib/jvm/java-21-openjdk-amd64
+
+# Download and install Spark
+RUN wget -q https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3-scala2.13.tgz && \
+    tar -xzf spark-3.5.0-bin-hadoop3-scala2.13.tgz -C /opt && \
+    rm spark-3.5.0-bin-hadoop3-scala2.13.tgz
+
+# Set Spark environment variable
+ENV SPARK_HOME /opt/spark-3.5.0-bin-hadoop3-scala2.13
+
+# Download and extract Hadoop binaries with native libraries
+# Note: Replace "hadoop-x.y.z" with the version compatible with Spark's Hadoop version
+RUN wget -q hhttps://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6-src.tar.gz && \
+    tar -xzf hadoop-3.3.6-src.tar.gz -C /opt && \
+    rm hadoop-3.3.6-src.tar.gz
+
+# Set Hadoop environment variable
+ENV HADOOP_HOME /opt/hadoop-3.3.6-src.tar.gz
+
+# Update LD_LIBRARY_PATH to include Hadoop native libraries
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$HADOOP_HOME/lib/native
+
+# Set working directory and default command
+WORKDIR /opt/spark-3.5.0-bin-hadoop3-scala2.13
