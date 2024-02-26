@@ -54,4 +54,8 @@ jobs:
         env: 
           DOCKER_CONTENT_TRUST: 0
         run: |
-          docker run --name=spark-test -di ruslanbahna/hardened-apache:latest bin/run-example SparkPi 10
+          docker run --name spark-test ${IMAGE_NAME}:latest /opt/spark/bin/run-example SparkPi 10
+          # Add commands here to check the output or container status
+          docker logs spark-test
+          # Cleanup
+          docker rm -f spark-test
