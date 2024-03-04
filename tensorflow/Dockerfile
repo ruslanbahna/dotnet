@@ -18,7 +18,7 @@ FROM python:latest
 WORKDIR /usr/src/app
 
 # Install TensorFlow, replacing '2.x' with the specific version of TensorFlow 2 you wish to use, if necessary
-RUN pip install --upgrade pip && \
+RUN apt update && pip install --upgrade pip && \
     pip install tensorflow
 
 # Copy the current directory contents into the container at /usr/src/app
