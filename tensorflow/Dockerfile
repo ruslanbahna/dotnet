@@ -12,7 +12,7 @@
 #     apt-get autoremove -y && \
 #     rm -rf /var/lib/apt/lists/*
 # Use an official Python runtime as a parent image, specifying the version that aligns with TensorFlow's requirements
-FROM python:3.8-slim-buster
+FROM python:latest
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
