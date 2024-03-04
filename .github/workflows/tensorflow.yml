@@ -50,6 +50,8 @@ jobs:
           push: true # Changed to false to build but not push
           tags: ${{ env.IMAGE_NAME }}:latest
       - name: Create and run TensorFlow test script inside the container
+        env:
+          DOCKER_CONTENT_TRUST: 0
         run: |
           docker run --rm ${{ env.IMAGE_NAME }}:latest /bin/bash -c "\
           echo \"import tensorflow as tf\" > test_tensorflow.py && \
