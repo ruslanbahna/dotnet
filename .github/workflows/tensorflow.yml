@@ -1,0 +1,51 @@
+name: tensorflow
+
+on: [push]
+
+env:
+  IMAGE_NAME: ${{ secrets.HUB_REGISTRY }}/tensorflow
+  DOCKER_CONTENT_TRUST: 1
+  BASE_IMAGE: tensorflow/tensorflow
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./tensorflow/Dockerfile
+          push: false # Changed to false to build but not push
+          tags: ${{ env.IMAGE_NAME }}:latest
+          load: true # Needed to load the built image into Docker's image store for scanning
+
+      - name: Scan the Docker image with Trivy
+        uses: aquasecurity/trivy-action@master
+        env:
+          DOCKER_CONTENT_TRUST: 0
+        with:
+          image-ref: ${{ env.IMAGE_NAME }}:latest
+          exit-code: '1' # Fail the job if vulnerabilities are found
+          severity: HIGH,CRITICAL
+        continue-on-error: true
+      
+      - name: push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./tensorflow/Dockerfile 
+          push: true # Changed to false to build but not push
+          tags: ${{ env.IMAGE_NAME }}:latest

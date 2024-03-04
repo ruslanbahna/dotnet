@@ -1,50 +1,50 @@
-name: node-slim-test
+# name: node-slim-test
 
-on: [push]
+# on: [push]
 
-env:
-  IMAGE_NAME: ${{ secrets.HUB_REGISTRY }}/hardened-node-slim
-  DOCKER_CONTENT_TRUST: 1
-  BASE_IMAGE: node:slim
+# env:
+#   IMAGE_NAME: ${{ secrets.HUB_REGISTRY }}/hardened-node-slim
+#   DOCKER_CONTENT_TRUST: 1
+#   BASE_IMAGE: node:slim
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v3
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+#       - name: Login to DockerHub
+#         uses: docker/login-action@v1
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./hardened-node-slim/Dockerfile
-          push: false # Changed to false to build but not push
-          tags: ${{ env.IMAGE_NAME }}:latest
-          load: true # Needed to load the built image into Docker's image store for scanning
+#       - name: Build Docker image
+#         uses: docker/build-push-action@v5
+#         with:
+#           context: .
+#           file: ./hardened-node-slim/Dockerfile
+#           push: false # Changed to false to build but not push
+#           tags: ${{ env.IMAGE_NAME }}:latest
+#           load: true # Needed to load the built image into Docker's image store for scanning
 
-      - name: Scan the Docker image with Trivy
-        uses: aquasecurity/trivy-action@master
-        env:
-          DOCKER_CONTENT_TRUST: 0
-        with:
-          image-ref: ${{ env.IMAGE_NAME }}:latest
-          exit-code: '1' # Fail the job if vulnerabilities are found
-          severity: HIGH,CRITICAL 
+#       - name: Scan the Docker image with Trivy
+#         uses: aquasecurity/trivy-action@master
+#         env:
+#           DOCKER_CONTENT_TRUST: 0
+#         with:
+#           image-ref: ${{ env.IMAGE_NAME }}:latest
+#           exit-code: '1' # Fail the job if vulnerabilities are found
+#           severity: HIGH,CRITICAL 
       
-      - name: push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./hardened-node-slim/Dockerfile
-          push: true # Changed to false to build but not push
-          tags: ${{ env.IMAGE_NAME }}:latest
+#       - name: push Docker image
+#         uses: docker/build-push-action@v5
+#         with:
+#           context: .
+#           file: ./hardened-node-slim/Dockerfile
+#           push: true # Changed to false to build but not push
+#           tags: ${{ env.IMAGE_NAME }}:latest

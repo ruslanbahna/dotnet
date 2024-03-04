@@ -1,26 +1,26 @@
-name: Retrieve .NET Version
+# name: Retrieve .NET Version
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  get-dotnet-version:
-    runs-on: ubuntu-latest
+# jobs:
+#   get-dotnet-version:
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
 
-    - name: Pull Docker Image
-      run: |
-        docker pull mcr.microsoft.com/dotnet/runtime:8.0-jammy-chiseled
-      # You can replace the image name with your specific image if needed
+#     - name: Pull Docker Image
+#       run: |
+#         docker pull mcr.microsoft.com/dotnet/runtime:8.0-jammy-chiseled
+#       # You can replace the image name with your specific image if needed
 
-    - name: Get .NET and OS Versions
-      run: |
-        DOTNET_VERSION=$(docker inspect -f '{{index .Config.Env 5}}' mcr.microsoft.com/dotnet/runtime:8.0-jammy-chiseled | cut -d'=' -f2)
-        OS_VERSION=$(docker inspect -f '{{.Os}}' mcr.microsoft.com/dotnet/runtime:8.0-jammy-chiseled)
-        echo "The .NET Version is: $DOTNET_VERSION"
-        echo "The OS Version is: $OS_VERSION"
+#     - name: Get .NET and OS Versions
+#       run: |
+#         DOTNET_VERSION=$(docker inspect -f '{{index .Config.Env 5}}' mcr.microsoft.com/dotnet/runtime:8.0-jammy-chiseled | cut -d'=' -f2)
+#         OS_VERSION=$(docker inspect -f '{{.Os}}' mcr.microsoft.com/dotnet/runtime:8.0-jammy-chiseled)
+#         echo "The .NET Version is: $DOTNET_VERSION"
+#         echo "The OS Version is: $OS_VERSION"
