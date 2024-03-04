@@ -12,24 +12,23 @@
 #     apt-get autoremove -y && \
 #     rm -rf /var/lib/apt/lists/*
 # Use an official Python runtime as a parent image, specifying the version that aligns with TensorFlow's requirements
-FROM python:latest
+# Use the latest Ubuntu image as the base
+FROM ubuntu:latest
 
-# Set the working directory in the container
-WORKDIR /usr/src/app
+# Set environment variables to avoid interactive dialog during installations and to set the LANG environment
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8
 
-# Install TensorFlow, replacing '2.x' with the specific version of TensorFlow 2 you wish to use, if necessary
-RUN apt update && pip install --upgrade pip && \
-    pip install tensorflow
+# Update and install necessary packages
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy the current directory contents into the container at /usr/src/app
-COPY . .
+# Upgrade pip to ensure we can install the latest TensorFlow package
+RUN pip3 install --upgrade pip
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
+# Install TensorFlow
+RUN pip3 install tensorflow
 
-# Define environment variable
-ENV NAME World
-
-# Run app.py when the container launches
-CMD ["python", "app.py"]
 
