@@ -21,10 +21,8 @@ ENV LANG=C.UTF-8
 
 # Update and install necessary packages
 RUN apt-get update ; \
-    apt-get install -y ; \
+    apt-get install -y python3-pip  python3-dev  ; \
     apt-get upgrade -y linux-libc-dev ; \
-    python3-pip  ; \
-    python3-dev  ; \
     rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip to ensure we can install the latest TensorFlow package
