@@ -6,7 +6,7 @@ set -xe
 
 REQUIREMENTS=$1
 
-# Define Python version
+# Define Python version 
 PYTHON_VERSION="3.11.2" # Update this to the latest version you need
 
 # Prepare build environment

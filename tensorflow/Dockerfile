@@ -56,7 +56,7 @@ COPY ./setup.python.sh /setup.python.sh
 COPY ./cpu.requirements.txt /cpu.requirements.txt
 RUN chmod +x /setup.python.sh
 RUN /setup.python.sh $PYTHON_VERSION /cpu.requirements.txt
-RUN pip install --no-cache-dir ${TENSORFLOW_PACKAGE} 
+RUN python3 -m pip install --upgrade pip && pip install --no-cache-dir ${TENSORFLOW_PACKAGE} 
 
 COPY bashrc /etc/bash.bashrc
 RUN chmod a+rwx /etc/bash.bashrc
