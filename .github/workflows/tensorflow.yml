@@ -58,4 +58,4 @@ jobs:
           echo \"print('TensorFlow version:', tf.__version__)\" >> test_tensorflow.py && \
           echo \"hello = tf.constant('Hello, TensorFlow!')\" >> test_tensorflow.py && \
           echo \"tf.print(hello)\" >> test_tensorflow.py && \
-          python3 test_tensorflow.py"
+          python test_tensorflow.py"
