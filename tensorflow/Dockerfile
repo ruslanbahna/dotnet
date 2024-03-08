@@ -66,6 +66,7 @@ FROM ubuntu:22.04 as final
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG C.UTF-8
+ENV PATH="/usr/local/bin:${PATH}"
 
 # Copy Python and other dependencies from builder stage
 COPY --from=builder /usr/local /usr/local
