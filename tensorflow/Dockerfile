@@ -26,7 +26,7 @@ RUN /setup.packages.sh /cpu.packages.txt
 
 
 ARG PYTHON_VERSION=python3.11
-ARG TENSORFLOW_PACKAGE=tf-nightly
+ARG TENSORFLOW_PACKAGE=tensorflow-cpu
 COPY ./setup.python.sh /setup.python.sh
 COPY ./cpu.requirements.txt /cpu.requirements.txt
 RUN chmod +x /setup.python.sh
