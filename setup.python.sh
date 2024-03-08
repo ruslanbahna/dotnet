@@ -49,6 +49,13 @@ python3 -m pip install --no-cache-dir --upgrade pip
 # Upgrade setuptools to address CVE-2022-40897
 python3 -m pip install --no-cache-dir --upgrade "setuptools>=65.5.1"
 
+# Create a symbolic link for python to point to python3, ensuring 'python' command works
+if [ ! -f "/usr/bin/python" ]; then
+    ln -s /usr/local/bin/python${PYTHON_VERSION:0:4} /usr/bin/python
+elif [ -f "/usr/bin/python" ]; then
+    echo "A python symlink already exists. Ensure it points to the correct version if necessary."
+fi
+
 # Install required Python packages from requirements.txt
 if [[ -f "$REQUIREMENTS" ]]; then
     python3 -m pip install --no-cache-dir -r $REQUIREMENTS
