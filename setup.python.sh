@@ -42,9 +42,12 @@ make altinstall  # Use altinstall to prevent overriding the system python binary
 update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python${PYTHON_VERSION:0:4} 1
 update-alternatives --set python3 /usr/local/bin/python${PYTHON_VERSION:0:4}
 
-# Install pip
+# Install pip and upgrade it
 python3 -m ensurepip
 python3 -m pip install --no-cache-dir --upgrade pip
+
+# Upgrade setuptools to address CVE-2022-40897
+python3 -m pip install --no-cache-dir --upgrade "setuptools>=65.5.1"
 
 # Install required Python packages from requirements.txt
 if [[ -f "$REQUIREMENTS" ]]; then
