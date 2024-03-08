@@ -61,4 +61,7 @@ if [[ -f "$REQUIREMENTS" ]]; then
     python3 -m pip install --no-cache-dir -r $REQUIREMENTS
 fi
 
+apt-get autoremove -y build-essential wget
+rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 echo "Python $PYTHON_VERSION installation completed."
