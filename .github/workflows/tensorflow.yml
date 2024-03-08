@@ -47,7 +47,6 @@ jobs:
         with:
           context: .
           file: ./tensorflow/Dockerfile
-          platforms: linux/amd64,linux/arm64
           push: true # Changed to false to build but not push
           tags: ${{ env.IMAGE_NAME }}:latest
       - name: Create and run TensorFlow test script inside the container
