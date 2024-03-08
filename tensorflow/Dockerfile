@@ -13,22 +13,26 @@
 #     rm -rf /var/lib/apt/lists/*
 # Use an official Python runtime as a parent image, specifying the version that aligns with TensorFlow's requirements
 # Use the latest Ubuntu image as the base
-FROM ubuntu:latest
-
-# Set environment variables to avoid interactive dialog during installations and to set the LANG environment
+FROM ubuntu:22.04 as base
 ENV DEBIAN_FRONTEND=noninteractive
-ENV LANG=C.UTF-8
+ENV LANG C.UTF-8
 
-# Update and install necessary packages
-RUN apt-get update ; \
-    apt-get install -y python3-pip  python3-dev  ; \
-    apt-get upgrade -y linux-libc-dev ; \
-    rm -rf /var/lib/apt/lists/*
+COPY ./setup.sources.sh /setup.sources.sh
+COPY ./setup.packages.sh /setup.packages.sh
+COPY ./cpu.packages.txt /cpu.packages.txt
+RUN chmod +x /setup.sources.sh /setup.packages.sh
+RUN /setup.sources.sh 
+RUN /setup.packages.sh /cpu.packages.txt
 
-# Upgrade pip to ensure we can install the latest TensorFlow package
-RUN pip3 install --upgrade pip
 
-# Install TensorFlow
-RUN pip3 install tensorflow
+ARG PYTHON_VERSION=python3.11
+ARG TENSORFLOW_PACKAGE=tf-nightly
+COPY ./setup.python.sh /setup.python.sh
+COPY ./cpu.requirements.txt /cpu.requirements.txt
+RUN chmod +x /setup.python.sh
+RUN /setup.python.sh $PYTHON_VERSION /cpu.requirements.txt
+RUN pip install --no-cache-dir ${TENSORFLOW_PACKAGE} 
 
+COPY bashrc /etc/bash.bashrc
+RUN chmod a+rwx /etc/bash.bashrc
 
