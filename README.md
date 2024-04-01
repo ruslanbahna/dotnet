@@ -108,3 +108,37 @@ CMD ["/bin/bash"]
 ```
 
 GPG public brew 32F7D37FA5DDECF4603219925039B284BDD0DE39
+
+1. Welcome and Introduction (5 minutes)
+Brief welcome and overview of the meeting’s objectives.
+Quick round of introductions if necessary.
+2. Overview of the Task (10 minutes)
+Present the task: Implementing Wiz scanning for container images as part of the CI/CD pipeline using GitHub Actions.
+Discuss the importance of scanning container images for CVEs before they are published.
+Highlight the goal of limiting manual steps to ensure efficiency and reliability.
+3. Understanding Wiz Scanning (15 minutes)
+Brief explanation of Wiz, its capabilities, and why it's chosen for this task.
+Discuss the specific aspects of container images that Wiz will scan for and the expected output.
+4. Comparison with Trivy Scans (15 minutes)
+Overview of Trivy and its current use in the workflow.
+Discuss criteria for comparing Wiz and Trivy scans (e.g., comprehensiveness, speed, ease of use).
+5. GitHub Actions Implementation (20 minutes)
+Discuss the steps required to integrate Wiz scanning into GitHub Actions.
+Setting up the Wiz scanner as part of the CI/CD pipeline.
+Configuring GitHub Actions to trigger Wiz scanning on specific events.
+Explore potential challenges and solutions in the integration process.
+6. Coordination and Roles (10 minutes)
+Assign responsibilities among the team members.
+Who will be responsible for setting up the Wiz integration?
+Who will handle the comparison with Trivy scans?
+Discuss how to coordinate efforts and communicate progress.
+7. Next Steps and Timeline (10 minutes)
+Outline immediate next steps following the meeting.
+Set tentative deadlines for key milestones in the project.
+Agree on a schedule for regular updates or follow-up meetings.
+8. Open Discussion (10 minutes)
+Open the floor for any questions, concerns, or suggestions from the participants.
+9. Wrap-Up and Closing (5 minutes)
+Summarize the key points discussed and decisions made.
+Confirm the action items and responsible individuals.
+Thank everyone for their participation and adjourn the meeting.
