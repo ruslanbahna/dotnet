@@ -50,3 +50,4 @@ jobs:
           file: ./dotnet-test/Dockerfile
           push: true # Push the image if the scan is successful
           tags: ${{ env.IMAGE_NAME }}:latest
+      
