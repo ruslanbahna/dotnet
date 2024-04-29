@@ -10,9 +10,6 @@ RUN wget https://packages.microsoft.com/config/ubuntu/$(. /etc/os-release && ech
     dpkg -i packages-microsoft-prod.deb && \
     rm packages-microsoft-prod.deb
 
-# Install the required ICU library and other dependencies
-RUN apt-get update && \
-    apt-get install -y libicu-dev
 
 # Install the .NET SDK 8
 RUN apt-get update && \
