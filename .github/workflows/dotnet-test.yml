@@ -50,4 +50,11 @@ jobs:
           file: ./dotnet-test/Dockerfile
           push: true # Push the image if the scan is successful
           tags: ${{ env.IMAGE_NAME }}:latest
+      - name : test sdk
+        env: 
+          DOCKER_CONTENT_TRUST: 0
+        run : |
+        docker run --name=dotnet-sdk-test -di ${{${{ env.IMAGE_NAME:latest}}
+        docker exec dotnet-sdk-test /bin/bash -c "dotnet new console -n HellowWorldApp && cd HellowWorldApp && dotnet build && dotnet run"
+
       
