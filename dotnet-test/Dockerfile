@@ -14,6 +14,7 @@ RUN wget https://packages.microsoft.com/config/ubuntu/$(. /etc/os-release && ech
 # Install the .NET SDK 8
 RUN apt-get update && \
     apt-get install -y dotnet-sdk-8.0
+RUN dotnet add package NuGet.Packaging --version 6.8.1
 
 # Clean up
 RUN apt-get clean && \
