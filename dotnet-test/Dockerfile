@@ -13,7 +13,7 @@ RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-p
 
 # Install the .NET SDK 8
 RUN apt-get update && \
-    apt-get install -y dotnet-sdk-8.0
+    apt-get install -y dotnet-sdk-8.0 nuget
 
 # Optionally, install the ASP.NET Core Runtime if you only need to run web applications
 # RUN apt-get install -y aspnetcore-runtime-8.0
