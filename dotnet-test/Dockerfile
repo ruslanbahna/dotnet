@@ -1,8 +1,6 @@
 # Use Ubuntu latest as the base image
 FROM ubuntu:latest
 
-# Set the working directory
-WORKDIR /app
 
 # Install necessary utilities and software-properties-common for adding repositories
 RUN apt-get update && \
