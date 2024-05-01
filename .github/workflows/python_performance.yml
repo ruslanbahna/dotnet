@@ -31,7 +31,7 @@ jobs:
           pyperformance run --rigorous -b ${{ env.benchmark_list }}
         shell: bash
         env:
-          benchmark_list: "depcopy,float"  # Specify benchmarks here
+          benchmark_list: "depecopy,float"  # Specify benchmarks here
 
 
 
