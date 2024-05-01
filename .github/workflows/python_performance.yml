@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  benchmark_list: "depcopy, float"
+  benchmark_list: depcopy,float
 
 jobs:
   performance_test:
