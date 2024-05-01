@@ -28,13 +28,15 @@ jobs:
     - name: Set up virtual environment
       run: |
         python3 -m venv /venv
-        echo "source /venv/bin/activate" >> $GITHUB_ENV
 
     - name: Install pyperformance
-      run: pip install pyperformance
+      run: |
+        source /venv/bin/activate
+        pip install pyperformance
 
     - name: Run selected benchmarks with CPU affinity
       run: |
+        source /venv/bin/activate
         pyperformance run --benchmarks ${{ env.benchmark_list }} --affinity=1
 
 
