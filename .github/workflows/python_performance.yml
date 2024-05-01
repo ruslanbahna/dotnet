@@ -24,20 +24,24 @@ jobs:
       run: |
         apt-get update
         apt-get install -y python3 python3-venv python3-pip
+      shell: bash
 
     - name: Set up virtual environment
       run: |
         python3 -m venv /venv
+      shell: bash
 
     - name: Install pyperformance
       run: |
         source /venv/bin/activate
         pip install pyperformance
+      shell: bash
 
     - name: Run selected benchmarks with CPU affinity
       run: |
         source /venv/bin/activate
         pyperformance run --benchmarks ${{ env.benchmark_list }} --affinity=1
+      shell: bash
 
 
 
