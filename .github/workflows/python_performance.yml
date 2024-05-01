@@ -1,37 +1,41 @@
-name: Python Performance Test in Ubuntu Container
+name: Python Performance Benchmark
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  benchmark_list: "depcopy, float"
 
 jobs:
-  test-in-ubuntu:
+  performance_test:
     runs-on: ubuntu-latest
-    container:
-      image: ubuntu:latest
+    container: ubuntu:latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Check out repository code
+      uses: actions/checkout@v2
 
-      - name: Install Python and Create Virtual Environment
-        run: |
-          apt-get update
-          apt-get install -y python3 python3-venv python3-pip
-          python3 -m venv /venv
-        shell: bash
+    - name: Install Python and dependencies
+      run: |
+        apt-get update
+        apt-get install -y python3 python3-venv python3-pip
 
-      - name: Install pyperformance
-        run: |
-          source /venv/bin/activate
-          pip install pyperformance
-        shell: bash
+    - name: Set up virtual environment
+      run: |
+        python3 -m venv /venv
+        echo "source /venv/bin/activate" >> $GITHUB_ENV
 
-      - name: Run pyperformance Benchmark
-        run: |
-          source /venv/bin/activate
-          pyperformance run --rigorous -b ${{ env.benchmark_list }}
-        shell: bash
-        env:
-          benchmark_list: "depecopy,float"  # Specify benchmarks here
+    - name: Install pyperformance
+      run: pip install pyperformance
+
+    - name: Run selected benchmarks with CPU affinity
+      run: |
+        pyperformance run --benchmarks ${{ env.benchmark_list }} --affinity=1
 
 
 
