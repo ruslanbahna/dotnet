@@ -51,3 +51,9 @@ RUN curl -fSL --output dotnet.tar.gz https://dotnetcli.azureedge.net/dotnet/Sdk/
 
 # Create symbolic link for dotnet
 RUN ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+
+# Verify dotnet installation
+RUN dotnet --info
+
+# Set the PATH for all users
+RUN echo 'export PATH=$PATH:/usr/share/dotnet:/usr/share/dotnet/tools' >> /etc/profile
