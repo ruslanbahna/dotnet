@@ -1,6 +1,9 @@
 name: dotnet-slim-test
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 env:
   IMAGE_NAME: ${{ secrets.HUB_REGISTRY }}/hardened-dotnet 
