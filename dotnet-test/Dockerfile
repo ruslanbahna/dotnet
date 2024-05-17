@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     apt-transport-https \
     software-properties-common \
+    libicu-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Add the Microsoft package signing key to your list of trusted keys and add the package repository
