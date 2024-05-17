@@ -21,10 +21,11 @@ RUN apt-get update && apt-get install -y \
     zlib1g \
     && rm -rf /var/lib/apt/lists/*
 
-# Add the Microsoft package signing key to your list of trusted keys and add the package repository
-RUN wget https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
-    && dpkg -i packages-microsoft-prod.deb \
-    && rm packages-microsoft-prod.deb
+# Download and install the .NET SDK manually
+RUN wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh \
+    && chmod +x ./dotnet-install.sh \
+    && ./dotnet-install.sh --channel 8.0
 
-# Update the package list and install the .NET 8.0 SDK
-RUN apt-get update && apt-get install -y dotnet-sdk-8.0
+# Set environment variables
+ENV DOTNET_ROOT=/root/.dotnet
+ENV PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
