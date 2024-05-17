@@ -3,7 +3,7 @@ name: dotnet-slim-test
 on: [push]
 
 env:
-  IMAGE_NAME: ${{ secrets.HUB_REGISTRY }}/hardened-dotnet
+  IMAGE_NAME: ${{ secrets.HUB_REGISTRY }}/hardened-dotnet 
   DOCKER_CONTENT_TRUST: 1
   BASE_IMAGE: ubuntu:latest
 
