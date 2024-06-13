@@ -82,7 +82,7 @@
 
 # USER ${USER_UID}:${USER_UID}
 # Stage 1: Build Dynatrace Operator with patched Go
-FROM golang:1.22.9 AS operator-build
+FROM golang:1.22.4 AS operator-build
 
 # Install necessary dependencies and clone the Dynatrace Operator repository
 RUN apt-get update && \
