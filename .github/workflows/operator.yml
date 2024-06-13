@@ -43,7 +43,6 @@ jobs:
           image-ref: ${{ env.IMAGE_NAME }}:latest
           exit-code: '1' # Fail the job if vulnerabilities are found
           severity: HIGH,CRITICAL 
-        continue-on-error: true
 
       - name: Push Docker image
         if: success() # Only push if the scan step succeeded (no HIGH or CRITICAL vulnerabilities)
