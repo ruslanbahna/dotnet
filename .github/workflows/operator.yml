@@ -30,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./dotnet-test/Dockerfile
+          file: ./operator/Dockerfile
           push: false # Set to false to build but not push initially
           tags: ${{ env.IMAGE_NAME }}:latest
           load: true # Load the built image into Docker's image store for scanning
