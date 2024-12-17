@@ -312,3 +312,25 @@ Recommendations
 Use secure alternatives wherever possible (e.g., HTTPS, SFTP, LDAPS, IMAPS).
 Always enable TLS/SSL for sensitive communications.
 Use firewalls to restrict access to critical ports (e.g., databases like MySQL and PostgreSQL).
+#!/bin/bash
+
+# Enable Password Authentication in sshd_config
+echo "Enabling password authentication..."
+
+# Backup the sshd_config file
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+
+# Update PasswordAuthentication to yes
+sudo sed -i 's/^#PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sudo sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+# Restart SSH service to apply changes
+echo "Restarting SSH service..."
+sudo systemctl restart sshd
+
+# Verify the change
+echo "Verifying SSH configuration..."
+sudo grep -i PasswordAuthentication /etc/ssh/sshd_config
+
+echo "Password authentication has been enabled. You can now SSH using a password."
+
