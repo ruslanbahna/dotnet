@@ -144,176 +144,25 @@ Deprecation: Gradually phasing out old images and ensuring that deprecated image
 Cleanup: Removing unused or obsolete images from registries to save storage and maintain an organized image repository.
 By following a structured container image operation model, organizations can efficiently manage container images, ensuring they are secure, reliable, and performant throughout their lifecycle.
 
-1. Well-Known Ports (0–1023)
-Port Number	Protocol	Description	Where It Is Used	Secured?
-20, 21	FTP	File Transfer Protocol	File transfer	❌ Unsecured (Use SFTP/FTPS)
-22	SSH	Secure Shell	Remote login, secure transfers	✅ Secured
-23	Telnet	Unsecured remote login	Remote access (deprecated)	❌ Unsecured (Use SSH)
-25	SMTP	Simple Mail Transfer Protocol	Sending emails	❌ Unsecured (Use SMTPS or STARTTLS)
-53	DNS	Domain Name System	Resolving domain names	❌ Unsecured (DNS over HTTPS/TLS available)
-67, 68	DHCP	Dynamic Host Configuration Protocol	IP assignment	❌ Unsecured
-69	TFTP	Trivial File Transfer Protocol	Simple file transfers	❌ Unsecured
-80	HTTP	HyperText Transfer Protocol	Web browsing	❌ Unsecured (Use HTTPS on 443)
-110	POP3	Post Office Protocol 3	Email retrieval	❌ Unsecured (Use POP3S on 995)
-123	NTP	Network Time Protocol	Time synchronization	❌ Unsecured (Use NTP with Autokey)
-135	RPC	Remote Procedure Call	Microsoft DCOM communications	❌ Unsecured (Use with secured channels)
-137–139	NetBIOS	NetBIOS services	Windows file sharing	❌ Unsecured
-143	IMAP	Internet Message Access Protocol	Email access	❌ Unsecured (Use IMAPS on 993)
-161, 162	SNMP	Simple Network Management Protocol	Network monitoring	❌ Unsecured (Use SNMPv3)
-389	LDAP	Lightweight Directory Access Protocol	Directory services (e.g., AD)	❌ Unsecured (Use LDAPS on 636)
-443	HTTPS	Secure HTTP	Secured web browsing	✅ Secured
-465	SMTPS	SMTP over SSL	Sending emails securely	✅ Secured
-514	Syslog	System Logging	Logging system events	❌ Unsecured (Use Syslog over TLS)
-636	LDAPS	LDAP over SSL	Secure directory services	✅ Secured
-989, 990	FTPS	FTP over SSL	Secure file transfers	✅ Secured
-993	IMAPS	IMAP over SSL	Secure email access	✅ Secured
-995	POP3S	POP3 over SSL	Secure email retrieval	✅ Secured
-1. Well-Known Ports (0–1023)
-Port Number	Protocol	Description	Where It Is Used	Secured?
-19	CHARGEN	Character Generator Protocol	Testing/debugging	❌ Unsecured
-42	WINS Replication	Windows Internet Name Service	Name resolution in Windows	❌ Unsecured
-88	Kerberos	Authentication Protocol	Authentication in AD, MIT Kerberos	✅ Secured
-119	NNTP	Network News Transfer Protocol	Usenet article transfer	❌ Unsecured
-137–139	NetBIOS	NetBIOS Name/Datagram/Session Services	Windows File Sharing	❌ Unsecured
-179	BGP	Border Gateway Protocol	Internet routing	❌ Unsecured (Use IPsec)
-389	LDAP	Lightweight Directory Access Protocol	Directory services (e.g., AD)	❌ Unsecured (Use LDAPS on 636)
-445	SMB	Server Message Block	File sharing in Windows	❌ Unsecured (Use SMB over TLS)
-464	Kerberos Change/Set	Kerberos Password Change	AD authentication	✅ Secured
-636	LDAPS	LDAP over SSL	Secure directory services	✅ Secured
-860	iSCSI	Internet Small Computer Systems Interface	Storage networking	❌ Unsecured (Use IPsec)
-873	Rsync	Rsync file synchronization	File syncing and backups	❌ Unsecured (Use SSH for security)
-993	IMAPS	IMAP over SSL	Secure email access	✅ Secured
-995	POP3S	POP3 over SSL	Secure email retrieval	✅ Secured
-1. Well-Known Ports (0–1023)
-Port Number	Protocol	Description	Where It Is Used	Secured?
-20, 21	FTP	File Transfer Protocol	File transfers (insecure)	❌ Unsecured (Use SFTP/FTPS)
-22	SSH	Secure Shell	Secure remote login, SCP, SFTP	✅ Secured
-23	Telnet	Unsecured remote login	Legacy remote access	❌ Unsecured (Use SSH)
-25	SMTP	Simple Mail Transfer Protocol	Email sending	❌ Unsecured (Use SMTPS or STARTTLS)
-53	DNS	Domain Name System	Name resolution (plaintext)	❌ Unsecured (Use DNS-over-TLS/HTTPS)
-69	TFTP	Trivial File Transfer Protocol	Simple file transfers	❌ Unsecured
-80	HTTP	HyperText Transfer Protocol	Unsecured web browsing	❌ Unsecured (Use HTTPS)
-88	Kerberos	Kerberos authentication	Authentication (e.g., AD)	✅ Secured
-110	POP3	Post Office Protocol	Retrieving emails (insecure)	❌ Unsecured (Use POP3S)
-123	NTP	Network Time Protocol	Time synchronization	❌ Unsecured (Use NTP over TLS/Autokey)
-137–139	NetBIOS	NetBIOS services	Windows SMB file sharing	❌ Unsecured
-143	IMAP	Internet Message Access Protocol	Accessing emails (insecure)	❌ Unsecured (Use IMAPS)
-161, 162	SNMP	Simple Network Management Protocol	Network monitoring	❌ Unsecured (Use SNMPv3)
-389	LDAP	Lightweight Directory Access Protocol	Directory services (e.g., AD)	❌ Unsecured (Use LDAPS)
-443	HTTPS	Secure HTTP	Encrypted web browsing	✅ Secured
-445	SMB	Server Message Block	Windows file sharing	❌ Unsecured (Use SMB over TLS)
-465	SMTPS	SMTP over SSL	Secure email sending	✅ Secured
-514	Syslog	System Logging	Logging events	❌ Unsecured (Use Syslog over TLS)
-636	LDAPS	LDAP over SSL	Secure directory services	✅ Secured
-989, 990	FTPS	FTP over SSL	Secure file transfers	✅ Secured
-993	IMAPS	IMAP over SSL	Secure email access	✅ Secured
-995	POP3S	POP3 over SSL	Secure email retrieval	✅ Secured
-1080	SOCKS Proxy	SOCKS Proxy Protocol	Proxy services	❌ Unsecured (Use TLS for security)
+export DEBIAN_FRONTEND=noninteractive
+ln -fs /usr/share/zoneinfo/UTC /etc/localtime
+apt update && apt upgrade -y
+apt install -y software-properties-common
+add-apt-repository -y ppa:deadsnakes/ppa
+apt update
+apt install -y python3.13 python3.13-venv python3.13-dev tzdata
+dpkg-reconfigure -f noninteractive tzdata
+python3.13 --version
 
-2. Registered Ports (1024–49151)
-Port Number	Protocol	Description	Where It Is Used	Secured?
-1080	SOCKS Proxy	SOCKS Proxy protocol	Proxy servers	❌ Unsecured (Can use TLS)
-1433	MS-SQL	Microsoft SQL Server	Database access	❌ Unsecured (Can use TLS)
-1521	Oracle DB	Oracle Database	Database access	❌ Unsecured (Can use TLS)
-2049	NFS	Network File System	File sharing	❌ Unsecured (Use secured NFS implementations)
-2181	Zookeeper	Apache Zookeeper	Distributed coordination	❌ Unsecured (Use TLS)
-2379, 2380	etcd	etcd key-value store	Kubernetes and distributed systems	❌ Unsecured (Use TLS)
-3306	MySQL	MySQL Database	Database access	❌ Unsecured (Can use TLS)
-3389	RDP	Remote Desktop Protocol	Remote desktop connections	✅ Secured
-5432	PostgreSQL	PostgreSQL Database	Database access	❌ Unsecured (Can use TLS)
-5671	AMQPS	Advanced Message Queuing Protocol Secure	Secure RabbitMQ communications	✅ Secured
-5672	AMQP	Advanced Message Queuing Protocol	RabbitMQ and similar brokers	❌ Unsecured (Use AMQPS on 5671)
-5900–5999	VNC	Virtual Network Computing	Remote desktop over VNC	❌ Unsecured (Use VNC with TLS)
-6379	Redis	Redis Database	In-memory key-value store	❌ Unsecured (Use Redis with TLS)
-8000–8080	HTTP-Alt	Alternate HTTP	Development/testing servers	❌ Unsecured (Use HTTPS on 8443)
-8443	HTTPS-Alt	Alternate HTTPS	Secured web services	✅ Secured
-2. Registered Ports (1024–49151)
-Port Number	Protocol	Description	Where It Is Used	Secured?
-1080	SOCKS Proxy	SOCKS Proxy protocol	Proxy servers	❌ Unsecured (Can use TLS)
-1194	OpenVPN	VPN Protocol	VPN tunnels	✅ Secured
-1433	MS-SQL	Microsoft SQL Server	Database access	❌ Unsecured (Can use TLS)
-1723	PPTP	Point-to-Point Tunneling Protocol	VPN tunneling (deprecated)	❌ Unsecured (Use L2TP/IPsec)
-1883	MQTT	Message Queuing Telemetry Transport	IoT communication	❌ Unsecured (Use TLS on port 8883)
-2049	NFS	Network File System	File sharing	❌ Unsecured (Use secured NFS implementations)
-2375	Docker API (Unsecured)	Docker Daemon API	Docker management	❌ Unsecured (Use TLS on 2376)
-2376	Docker API (Secured)	Docker Daemon API over TLS	Secure Docker management	✅ Secured
-2483, 2484	Oracle DB	Oracle Database	Database access	❌ Unsecured (Use TLS)
-3128	Squid Proxy	Squid HTTP Proxy	Caching proxy	❌ Unsecured (Can use TLS)
-3306	MySQL	MySQL Database	Database access	❌ Unsecured (Can use TLS)
-3389	RDP	Remote Desktop Protocol	Remote desktop connections	✅ Secured
-5432	PostgreSQL	PostgreSQL Database	Database access	❌ Unsecured (Can use TLS)
-5671	AMQPS	Advanced Message Queuing Protocol Secure	RabbitMQ secure communication	✅ Secured
-5672	AMQP	Advanced Message Queuing Protocol	RabbitMQ messaging	❌ Unsecured (Use AMQPS on 5671)
-5985	WinRM (HTTP)	Windows Remote Management (HTTP)	Remote management	❌ Unsecured (Use WinRM HTTPS on 5986)
-5986	WinRM (HTTPS)	Windows Remote Management (HTTPS)	Secure remote management	✅ Secured
-6379	Redis	Redis Database	In-memory key-value store	❌ Unsecured (Use TLS optionally)
-8080	HTTP-Alt	Alternate HTTP	Development/testing servers	❌ Unsecured (Use HTTPS on 8443)
-8443	HTTPS-Alt	Alternate HTTPS	Secured web services	✅ Secured
-9200	Elasticsearch	Elasticsearch API	Search/analytics database	❌ Unsecured (Use TLS)
-15672	RabbitMQ Management	RabbitMQ Management UI	Web-based interface	❌ Unsecured (Can use TLS)
-2. Registered Ports (1024–49151)
-Port Number	Protocol	Description	Where It Is Used	Secured?
-1433	MS-SQL	Microsoft SQL Server	Database operations	❌ Unsecured (Use TLS)
-1521	Oracle Database	Oracle Database listener	Database connections	❌ Unsecured (Use TLS)
-2049	NFS	Network File System	File sharing	❌ Unsecured (Secure with Kerberos or TLS)
-2375	Docker (Unsecured)	Docker Daemon API	Docker management	❌ Unsecured (Use TLS on 2376)
-2376	Docker (Secured)	Docker Daemon API over TLS	Secure Docker management	✅ Secured
-3306	MySQL	MySQL Database	Database connections	❌ Unsecured (Use TLS)
-3389	RDP	Remote Desktop Protocol	Windows remote access	✅ Secured
-5432	PostgreSQL	PostgreSQL Database	Database connections	❌ Unsecured (Use TLS)
-5671	AMQPS	AMQP over TLS	Secure RabbitMQ messaging	✅ Secured
-5672	AMQP	Advanced Message Queuing Protocol	Messaging and queuing (e.g., RabbitMQ)	❌ Unsecured
-6379	Redis	Redis Database	Key-value store	❌ Unsecured (Use Redis with TLS)
-8080	HTTP-Alt	Alternate HTTP	Local development, testing	❌ Unsecured (Use HTTPS)
-8443	HTTPS-Alt	Alternate HTTPS	Secure web services	✅ Secured
-9200	Elasticsearch	Elasticsearch API	Search and analytics	❌ Unsecured (Use TLS)
-
-3. Special Application Ports
-Port Number	Protocol	Description	Where It Is Used	Secured?
-1883	MQTT	Message Queuing Telemetry Transport	IoT communication	❌ Unsecured (Use MQTT over TLS on 8883)
-8883	MQTT over TLS	Secure Message Queuing Telemetry Transport	IoT communication	✅ Secured
-27017	MongoDB	MongoDB Database	Database access	❌ Unsecured (Can use TLS)
-8080	HTTP-Alt	Alternate HTTP	Local development	❌ Unsecured (Use HTTPS)
-9092	Kafka	Apache Kafka	Messaging and streaming	❌ Unsecured (Use TLS)
-15672	RabbitMQ Management	RabbitMQ Management UI	Web-based interface	❌ Unsecured (Can use TLS)
-3. Special Application Ports
-Port Number	Protocol	Description	Where It Is Used	Secured?
-8883	MQTT over TLS	Secure Message Queuing Telemetry Transport	IoT communication	✅ Secured
-9092	Kafka	Apache Kafka	Messaging and streaming	❌ Unsecured (Use TLS)
-27017, 27018	MongoDB	MongoDB Database	Database access	❌ Unsecured (Can use TLS)
-8088, 8089	Splunk	Splunk HTTP Event Collector (HEC)	Log ingestion	❌ Unsecured (Can use TLS)
-8888	Jupyter Notebook	Jupyter Notebook	Data science/development	❌ Unsecured (Use HTTPS)
-3. Special Application Ports
-Port Number	Protocol	Description	Where It Is Used	Secured?
-8883	MQTT over TLS	Secure Message Queuing Telemetry Transport	IoT and telemetry communication	✅ Secured
-9092	Apache Kafka	Kafka Messaging	Messaging and streaming systems	❌ Unsecured (Use TLS)
-27017, 27018	MongoDB	MongoDB Database	Database operations	❌ Unsecured (Use TLS)
-15672	RabbitMQ Management	RabbitMQ Management Interface	Messaging administration	❌ Unsecured (Use TLS)
-5985	WinRM (HTTP)	Windows Remote Management (HTTP)	Windows remote management	❌ Unsecured (Use WinRM HTTPS on 5986)
-5986	WinRM (HTTPS)	Windows Remote Management (HTTPS)	Secure remote management	✅ Secured
-
-4. Dynamic/Private Ports (49152–65535)
-Port Range	Protocol	Description	Where It Is Used	Secured?
-49152–65535	Dynamic or Private Ports	Client-server communications	Depends on application	Depends on app (e.g., HTTPS sessions secured)
-4. Financial/Banking-Specific Ports
-Banks may use specialized systems like SWIFT, payment gateways, and secure messaging protocols.
-Port Number	Protocol	Description	Where It Is Used	Secured?
-5000–5001	SWIFTNet	Secure financial messaging (over TLS)	Inter-bank communications	✅ Secured
-9000–9100	FIX Protocol	Financial Information Exchange	Stock trading, securities management	✅ Secured (via TLS)
-1812, 1813	RADIUS	Remote Authentication Dial-In User Service	Authentication in network systems	✅ Secured (Use with IPsec/TLS)
-50000–50001	SAP	SAP applications	Enterprise resource planning	❌ Unsecured (Use TLS)
-5. Dynamic/Private Ports (49152–65535)
-Dynamic/private ports are assigned on demand for client-to-server communications. Their security depends on the underlying application or protocol used.
-
-Port Range	Protocol	Description	Where It Is Used	Secured?
-49152–65535	Dynamic/Private	Temporary client-side ports	Client-server communications	Depends on protocol (e.g., HTTPS sessions secured)
-
-Recommendations
-Use secure alternatives wherever possible (e.g., HTTPS, SFTP, LDAPS, IMAPS).
-Always enable TLS/SSL for sensitive communications.
-Use firewalls to restrict access to critical ports (e.g., databases like MySQL and PostgreSQL).
-#!/bin/bash
-
+sudo apt update 
+sudo apt upgrade 
+sudo apt install -y software-properties-common build-essential libffi-dev libssl-dev zlib1g-dev libncurses5-dev libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev libssl-dev 
+sudo add-apt-repository ppa:deadsnakes/ppa 
+sudo apt update 
+sudo apt install -y python3.12 python3.12-venv  
+python3.12 --version 
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 312 
+sudo update-alternatives --config python3 
 # Enable Password Authentication in sshd_config
 echo "Enabling password authentication..."
 
